@@ -77,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                    'orders.context_processors.cart_count',
             ],
         },
     },
@@ -162,3 +163,10 @@ STATICFILES_DIRS = [
 # Media files setup
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'merchants:home'
+LOGOUT_REDIRECT_URL = 'merchants:home'
+

@@ -1,0 +1,33 @@
+<!-- templates/merchants/dashboard/menu_confirm_delete.html -->
+{% extends 'base.html' %}
+
+{% block title %}Delete Menu Item - KantinKu{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Delete Menu Item</h2>
+                <p class="mt-2 text-sm text-gray-600">
+                    Are you sure you want to delete "{{ object.name }}"?
+                </p>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="flex justify-center space-x-4">
+                    <button type="submit" 
+                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700">
+                        Delete
+                    </button>
+                    <a href="{% url 'merchants:dashboard' %}" 
+                       class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -3,6 +3,7 @@
 {% block title %}{{ merchant.name }} - KantinKu{% endblock %}
 
 {% block content %}
+{% csrf_token %}
 <div class="bg-white">
     <!-- Merchant Header -->
     <div class="relative">
@@ -39,7 +40,8 @@
                 {% for item in items %}
                 <div class="relative flex flex-col bg-white rounded-lg shadow-sm overflow-hidden">
                     <div class="flex-shrink-0">
-                        <img class="h-48 w-full object-cover"  src="{% if  item.image %}{{  item.image.url.url }}{% else %}https://placehold.co/600x400{% endif %}"  alt="{{ item.name }}">
+                        <img class="h-48 w-full object-cover"  src="{% if item.image %}{{ item.image.url }}{% else %}https://placehold.co/600x400{% endif %}"
+                        alt="{{ item.name }}">
                     </div>
                     <div class="flex-1 p-6 flex flex-col justify-between">
                         <div class="flex-1">
@@ -63,13 +65,15 @@
 </div>
 
 {% block extra_js %}
+
+{% csrf_token %}
 <script>
 function addToCart(itemId) {
-    // Implement cart functionality with AJAX
-    fetch(`/cart/add/${itemId}/`, {
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    fetch(`/orders/cart/add/${itemId}/`, {
         method: 'POST',
         headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
+            'X-CSRFToken': csrftoken,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -79,17 +83,20 @@ function addToCart(itemId) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Update cart counter
-            document.querySelector('.cart-count').textContent = data.cart_count;
-            // Show success message
-            alert('Item added to cart!');
+            const cartCount = document.querySelector('.cart-count');
+            if (cartCount) {
+                cartCount.textContent = data.cart_count;
+            }
+            alert('Berhasil ditambahkan ke keranjang!');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Failed to add item to cart');
+        alert('Gagal menambahkan ke keranjang');
     });
 }
 </script>
+
+
 {% endblock %}
 {% endblock %}

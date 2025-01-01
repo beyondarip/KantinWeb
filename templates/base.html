@@ -46,14 +46,17 @@
                 <!-- Cart & User Menu -->
                 <div class="hidden sm:ml-6 sm:flex sm:items-center">
                     <div class="relative" x-data="{ isOpen: false }">
-                        <!-- Cart Icon -->
-                        <a href="" class="p-2 text-gray-600 hover:text-gray-900">
+                        <!-- Tambahkan relative di link -->
+                        <a href="{% url 'orders:cart' %}" class="relative p-2 text-gray-600 hover:text-gray-900 inline-flex items-center">
                             <span class="sr-only">Shopping cart</span>
                             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                             </svg>
                             {% if cart_count %}
-                            <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-primary rounded-full">{{ cart_count }}</span>
+                            <!-- Perbaiki positioning badge -->
+                            <span class="absolute -top-2 -right-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-primary rounded-full">
+                                {{ cart_count }}
+                            </span>
                             {% endif %}
                         </a>
                     </div>
@@ -64,10 +67,13 @@
                             <span class="sr-only">Open user menu</span>
                             <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name={{ user.username }}" alt="">
                         </button>
-                        <div x-show="isOpen" @click.away="isOpen = false" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                        <div x-show="isOpen" @click.away="isOpen = false" class="origin-top-right z-20 absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                             <div class="py-1">
                                 <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-                                <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Orders</a>
+                                {% if user.is_merchant %}
+                                <a href="{% url 'merchants:dashboard' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
+                                {% endif %}
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Orders</a>
                                 <form method="post" action="{% url 'accounts:logout' %}">
                                     {% csrf_token %}
                                     <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>

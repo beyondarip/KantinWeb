@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping Cart - KantinKu{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="text-3xl font-bold text-gray-900">Keranjang Belanja</h1>
+    
+    {% if cart.items.exists %}
+        <div class="mt-8">
+            <ul role="list" class="divide-y divide-gray-200">
+                {% for item in cart.items.all %}
+                <li class="py-6 flex" id="cart-item-{{ item.id }}">
+                    <div class="flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden">
+                        <img src="{% if item.menu_item.image %}{{ item.menu_item.image.url }}{% else %}https://placehold.co/600x400{% endif %}" 
+                             alt="{{ item.menu_item.name }}" 
+                             class="w-full h-full object-center object-cover">
+                    </div>
+
+                    <div class="ml-4 flex-1">
+                        <div class="flex justify-between text-base font-medium text-gray-900">
+                            <h3>{{ item.menu_item.name }}</h3>
+                            <p class="ml-4" id="subtotal-{{ item.id }}">Rp {{ item.get_subtotal|floatformat:0 }}</p>
+                        </div>
+                        <p class="mt-1 text-sm text-gray-500">{{ item.menu_item.merchant.name }}</p>
+                        <div class="flex items-center justify-between text-sm mt-2">
+                            <div class="flex items-center border rounded-md">
+                                <button onclick="updateQuantity({{ item.id }}, 'decrease')" 
+                                        class="px-3 py-1 text-primary hover:bg-gray-100">-</button>
+                                <span id="quantity-{{ item.id }}" class="px-3 py-1 border-x">{{ item.quantity }}</span>
+                                <button onclick="updateQuantity({{ item.id }}, 'increase')" 
+                                        class="px-3 py-1 text-primary hover:bg-gray-100">+</button>
+                            </div>
+                            <button onclick="removeItem({{ item.id }})" class="text-red-600 hover:text-red-500">Hapus</button>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            
+            <div class="border-t border-gray-200 py-6">
+                <div class="flex justify-between text-base font-medium text-gray-900">
+                    <p>Total</p>
+                    <p id="cart-total">Rp {{ cart.get_total_amount|floatformat:0 }}</p>
+                </div>
+                <div class="mt-6">
+                    <a href="#" 
+                       class="w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primary-dark">
+                        Checkout
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center py-12">
+            <h3 class="mt-2 text-sm font-medium text-gray-900">Keranjang masih kosong</h3>
+            <p class="mt-1 text-sm text-gray-500">Yuk mulai belanja!</p>
+            <div class="mt-6">
+                <a href="{% url 'merchants:merchant_list' %}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark">
+                    Lihat Merchant
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+{% block extra_js %}
+<script>
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+function updateQuantity(itemId, action) {
+    fetch(`/orders/cart/update/${itemId}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: action })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (data.removed) {
+                document.getElementById(`cart-item-${itemId}`).remove();
+                if (document.querySelectorAll('li').length === 0) {
+                    location.reload();
+                }
+            } else {
+                document.getElementById(`quantity-${itemId}`).textContent = data.quantity;
+                document.getElementById(`subtotal-${itemId}`).textContent = `Rp ${data.subtotal.toLocaleString()}`;
+                document.getElementById('cart-total').textContent = `Rp ${data.total.toLocaleString()}`;
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Gagal mengupdate keranjang');
+    });
+}
+
+function removeItem(itemId) {
+    if (confirm('Apakah Anda yakin ingin menghapus item ini?')) {
+        fetch(`/orders/cart/remove/${itemId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById(`cart-item-${itemId}`).remove();
+                document.getElementById('cart-total').textContent = `Rp ${data.total.toLocaleString()}`;
+                if (document.querySelectorAll('li').length === 0) {
+                    location.reload();
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Gagal menghapus item');
+        });
+    }
+}
+</script>
+{% endblock %}
+{% endblock %}

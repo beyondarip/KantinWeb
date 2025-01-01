@@ -60,3 +60,81 @@ class MerchantDetailView(DetailView):
             menu_by_category[item.category].append(item)
         context['menu_by_category'] = menu_by_category
         return context
+    
+# merchants/views.py
+
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from .models import MenuItem, Category
+
+class MerchantDashboardView(LoginRequiredMixin, ListView):
+    template_name = 'merchants/dashboard/dashboard.html'
+    model = MenuItem
+    context_object_name = 'menu_items'
+    
+    def get_queryset(self):
+        return MenuItem.objects.filter(merchant__user=self.request.user)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_items'] = self.get_queryset().count()
+        context['categories'] = Category.objects.all()
+        return context
+
+class MenuItemCreateView(LoginRequiredMixin, CreateView):
+    model = MenuItem
+    template_name = 'merchants/dashboard/menu_form.html'
+    fields = ['category', 'name', 'description', 'price', 'image', 'is_available']
+    success_url = reverse_lazy('merchants:dashboard')
+    
+    def form_valid(self, form):
+        form.instance.merchant = self.request.user.merchant
+        return super().form_valid(form)
+    
+# merchants/views.py
+
+from django.contrib import messages
+from django.urls import reverse_lazy
+from django.shortcuts import redirect
+
+class MenuItemUpdateView(LoginRequiredMixin, UpdateView):
+    model = MenuItem
+    template_name = 'merchants/dashboard/menu_form.html'
+    fields = ['category', 'name', 'description', 'price', 'image', 'is_available']
+    success_url = reverse_lazy('merchants:dashboard')
+
+    def get_queryset(self):
+        return MenuItem.objects.filter(merchant__user=self.request.user)
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Menu item updated successfully!')
+        return super().form_valid(form)
+
+class MenuItemDeleteView(LoginRequiredMixin, DeleteView):
+    model = MenuItem
+    template_name = 'merchants/dashboard/menu_confirm_delete.html'
+    success_url = reverse_lazy('merchants:dashboard')
+
+    def get_queryset(self):
+        return MenuItem.objects.filter(merchant__user=self.request.user)
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, 'Menu item deleted successfully!')
+        return super().delete(request, *args, **kwargs)
+    
+# merchants/views.py
+
+from .forms import MenuItemForm
+
+class MenuItemCreateView(LoginRequiredMixin, CreateView):
+    model = MenuItem
+    form_class = MenuItemForm
+    template_name = 'merchants/dashboard/menu_form.html'
+    success_url = reverse_lazy('merchants:dashboard')
+
+class MenuItemUpdateView(LoginRequiredMixin, UpdateView):
+    model = MenuItem
+    form_class = MenuItemForm
+    template_name = 'merchants/dashboard/menu_form.html'
+    success_url = reverse_lazy('merchants:dashboard')

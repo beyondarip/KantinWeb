@@ -1,0 +1,83 @@
+<!-- templates/merchants/dashboard/menu_form.html -->
+{% extends 'base.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit{% else %}Add{% endif %} Menu Item - KantinKu{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="md:grid md:grid-cols-3 md:gap-6">
+        <div class="md:col-span-1">
+            <h3 class="text-lg font-medium leading-6 text-gray-900">
+                {% if form.instance.pk %}Edit{% else %}Add New{% endif %} Menu Item
+            </h3>
+            <p class="mt-1 text-sm text-gray-500">
+                Add the details of your menu item here.
+            </p>
+        </div>
+        <div class="mt-5 md:mt-0 md:col-span-2">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="shadow sm:rounded-md sm:overflow-hidden">
+                    <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+                        <!-- Name -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Name</label>
+                            <div class="mt-1">
+                                {{ form.name }}
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Description</label>
+                            <div class="mt-1">
+                                {{ form.description }}
+                            </div>
+                        </div>
+
+                        <!-- Category & Price -->
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Category</label>
+                                <div class="mt-1">
+                                    {{ form.category }}
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Price</label>
+                                <div class="mt-1">
+                                    {{ form.price }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image Upload -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Image</label>
+                            <div class="mt-1 flex items-center">
+                                {{ form.image }}
+                            </div>
+                        </div>
+
+                        <!-- Availability -->
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                                {{ form.is_available }}
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label class="font-medium text-gray-700">Available</label>
+                                <p class="text-gray-500">Set whether this item is currently available for order.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
