@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}KantinKu - Home{% endblock %}
+
+{% block content %}
+<div class="relative bg-white">
+    <!-- Hero Section -->
+    <div class="relative bg-gray-900">
+        <div class="max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+            <h1 class="text-4xl font-extrabold tracking-tight text-white md:text-5xl lg:text-6xl">Pesan Makanan Kantin</h1>
+            <p class="mt-6 max-w-3xl text-xl text-gray-300">Pesan makanan dari berbagai kantin favoritmu. Lebih mudah, lebih cepat.</p>
+            <div class="mt-10">
+                <a href="{% url 'merchants:merchant_list' %}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primary-dark">
+                    Lihat Semua Kantin
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Merchants -->
+    <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-extrabold tracking-tight text-gray-900">Kantin Populer</h2>
+        <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {% for merchant in featured_merchants %}
+            <div class="group relative">
+                <div class="relative w-full h-80 bg-white rounded-lg overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1">
+                    <img src="{{ merchant.image.url }}" alt="{{ merchant.name }}" class="w-full h-full object-center object-cover">
+                </div>
+                <h3 class="mt-6 text-base font-semibold text-gray-900">
+                    <a href="{% url 'merchants:merchant_detail' merchant.id %}">
+                        <span class="absolute inset-0"></span>
+                        {{ merchant.name }}
+                    </a>
+                </h3>
+                <p class="text-sm text-gray-500">{{ merchant.description|truncatechars:100 }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="bg-gray-50">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold tracking-tight text-gray-900">Kategori</h2>
+            <div class="mt-12 grid gap-8 md:grid-cols-3 lg:grid-cols-4">
+                {% for category in categories %}
+                <a href="{% url 'merchants:merchant_list' %}?category={{ category.id }}" class="group">
+                    <div class="relative bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md">
+                        <div class="p-6">
+                            <h3 class="text-lg font-medium text-gray-900">{{ category.name }}</h3>
+                            <p class="mt-2 text-sm text-gray-500">{{ category.merchant_set.count }} Merchant</p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 text-center">Cara Pesan</h2>
+        <div class="mt-12 grid gap-8 md:grid-cols-3">
+            <div class="text-center">
+                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white mx-auto">
+                    1
+                </div>
+                <h3 class="mt-6 text-lg font-medium text-gray-900">Pilih Kantin</h3>
+                <p class="mt-2 text-base text-gray-500">Pilih kantin favoritmu dari daftar yang tersedia</p>
+            </div>
+
+            <div class="text-center">
+                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white mx-auto">
+                    2
+                </div>
+                <h3 class="mt-6 text-lg font-medium text-gray-900">Pilih Menu</h3>
+                <p class="mt-2 text-base text-gray-500">Tambahkan menu yang kamu inginkan ke keranjang</p>
+            </div>
+
+            <div class="text-center">
+                <div class="flex items-center justify-center h-12 w-12 rounded-md bg-primary text-white mx-auto">
+                    3
+                </div>
+                <h3 class="mt-6 text-lg font-medium text-gray-900">Bayar & Tunggu</h3>
+                <p class="mt-2 text-base text-gray-500">Lakukan pembayaran dan tunggu pesananmu siap</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
