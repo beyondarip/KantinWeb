@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+     "whitenoise.runserver_nostatic",
+
   
     # Local apps
     'accounts',
@@ -111,11 +113,16 @@ DATABASES = {
     # }
        'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('PGDATABASE'),
-        'USER': os.getenv('PGUSER'),
-        'PASSWORD': os.getenv('PGPASSWORD'),
-        'HOST': os.getenv('PGHOST'),
-        'PORT': os.getenv('PGPORT'),
+        # 'NAME': os.getenv('PGDATABASE'),
+        # 'USER': os.getenv('PGUSER'),
+        # 'PASSWORD': os.getenv('PGPASSWORD'),
+        # 'HOST': os.getenv('PGHOST'),
+        # 'PORT': os.getenv('PGPORT'),
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'WTruFmBkbBpojGBNIzAzzLWYnqxNcETj',
+        'HOST': 'postgres.railway.internal',
+        'PORT': '5432',
     }
 }
 
