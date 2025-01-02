@@ -3,59 +3,156 @@
 {% block title %}Register - KantinKu{% endblock %}
 
 {% block content %}
-<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-        <div class="text-center">
-            <h2 class="text-3xl font-heading font-bold text-primary">Buat Akun Baru</h2>
-            <p class="mt-2 text-sm text-gray-600">Atau 
-                <a href="{% url 'accounts:login' %}" class="font-medium text-secondary hover:text-secondary/80">
-                    masuk ke akun yang sudah ada
-                </a>
-            </p>
-        </div>
-
-        <form method="POST" class="mt-8 space-y-6">
-            {% csrf_token %}
-            
-            <div class="space-y-4">
-                {% for field in form %}
-                <div>
-                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
-                        {{ field.label }}
-                    </label>
-                    {{ field }}
-                    {% if field.errors %}
-                    <div class="mt-1">
-                        {% for error in field.errors %}
-                        <p class="text-sm text-danger flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                            </svg>
-                            {{ error }}
-                        </p>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
+<div class="min-h-screen bg-neutral flex flex-col lg:flex-row">
+    <!-- Left Section - Hero/Branding -->
+    <div class="hidden lg:flex lg:w-1/2 bg-secondary relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-secondary to-primary/80"></div>
+        <div class="relative z-10 flex flex-col justify-center px-12">
+            <div class="mb-12">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <svg class="w-10 h-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.9999V7.9999C21 6.8953 20.1046 5.9999 19 5.9999H5C3.89543 5.9999 3 6.8953 3 7.9999V15.9999M21 15.9999L15.5 12.9999M21 15.9999V17.9999C21 19.1045 20.1046 19.9999 19 19.9999H5C3.89543 19.9999 3 19.1045 3 17.9999V15.9999M3 15.9999L8.5 12.9999M15.5 12.9999L12 15.9999L8.5 12.9999M15.5 12.9999L12 9.9999L8.5 12.9999"/>
+                    </svg>
+                    <span class="ml-3 text-2xl font-heading font-bold text-white">KantinKu</span>
                 </div>
-                {% endfor %}
+            </div>
+            <h1 class="text-4xl font-heading font-bold text-white mb-6">Selamat Datang di KantinKu!</h1>
+            <p class="text-lg text-white/90 mb-8">Bergabunglah dengan komunitas kami dan nikmati kemudahan pesan makanan favoritmu.</p>
+            
+            <!-- Features -->
+            <div class="space-y-6">
+                <div class="flex items-center text-white/90">
+                    <svg class="w-6 h-6 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Pesan makanan dengan mudah</span>
+                </div>
+                <div class="flex items-center text-white/90">
+                    <svg class="w-6 h-6 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Tracking pesanan real-time</span>
+                </div>
+                <div class="flex items-center text-white/90">
+                    <svg class="w-6 h-6 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>Pembayaran yang aman</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Background Pattern -->
+        <div class="absolute bottom-0 right-0 transform translate-x-1/3 translate-y-1/3">
+            <svg width="400" height="400" viewBox="0 0 200 200" fill="none">
+                <defs>
+                    <linearGradient id="paint0_linear" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="white" stop-opacity="0.1"/>
+                        <stop offset="1" stop-color="white" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="100" cy="100" r="100" fill="url(#paint0_linear)"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Right Section - Form -->
+    <div class="flex-1 flex items-center justify-center p-8">
+        <div class="w-full max-w-md">
+            <div class="text-center mb-8">
+                <!-- Mobile Logo -->
+                <div class="lg:hidden flex items-center justify-center mb-6">
+                    <svg class="w-10 h-10 text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.9999V7.9999C21 6.8953 20.1046 5.9999 19 5.9999H5C3.89543 5.9999 3 6.8953 3 7.9999V15.9999M21 15.9999L15.5 12.9999M21 15.9999V17.9999C21 19.1045 20.1046 19.9999 19 19.9999H5C3.89543 19.9999 3 19.1045 3 17.9999V15.9999M3 15.9999L8.5 12.9999M15.5 12.9999L12 15.9999L8.5 12.9999M15.5 12.9999L12 9.9999L8.5 12.9999"/>
+                    </svg>
+                    <span class="ml-3 text-2xl font-heading font-bold text-primary">KantinKu</span>
+                </div>
+                <h2 class="text-3xl font-heading font-bold text-primary">Buat Akun Baru</h2>
+                <p class="mt-2 text-sm text-gray-600">Atau 
+                    <a href="{% url 'accounts:login' %}" class="font-medium text-secondary hover:text-secondary/80 transition-colors">
+                        masuk ke akun yang sudah ada
+                    </a>
+                </p>
             </div>
 
-            <!-- Password Requirements (shown only when password field is focused) -->
-            <div id="password-requirements" class="hidden">
-                <h4 class="text-sm font-medium text-gray-700 mb-2">Password harus memenuhi kriteria berikut:</h4>
-                <ul class="text-sm text-gray-600 space-y-1 ml-5 list-disc">
-                    <li>Minimal 8 karakter</li>
-                    <li>Tidak boleh terlalu mirip dengan informasi pribadi anda</li>
-                    <li>Tidak boleh password yang umum digunakan</li>
-                    <li>Tidak boleh berisi angka saja</li>
-                </ul>
-            </div>
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="space-y-5">
+                    {% for field in form %}
+                    <div class="relative">
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                            {{ field.label }}
+                        </label>
+                        <div class="relative rounded-lg shadow-sm">
+                            {{ field }}
+                            {% if field.name == 'username' %}
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% if field.errors %}
+                        <div class="mt-1">
+                            {% for error in field.errors %}
+                            <p class="text-sm text-danger flex items-center">
+                                <svg class="w-4 h-4 mr-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                </svg>
+                                {{ error }}
+                            </p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
 
-            <button type="submit" 
-                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
-                Daftar Sekarang
-            </button>
-        </form>
+                <!-- Password Requirements -->
+                <div id="password-requirements" class="hidden bg-gray-50 rounded-lg p-4 border border-gray-200">
+                    <h4 class="text-sm font-medium text-gray-700 mb-2">Password harus memenuhi kriteria berikut:</h4>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
+                            </svg>
+                            Minimal 8 karakter
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
+                            </svg>
+                            Tidak boleh terlalu mirip dengan informasi pribadi
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
+                            </svg>
+                            Tidak boleh password yang umum
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"/>
+                            </svg>
+                            Tidak boleh berisi angka saja
+                        </li>
+                    </ul>
+                </div>
+
+                <button type="submit" 
+                        class="w-full flex justify-center py-3 px-4 rounded-lg text-white bg-secondary hover:bg-secondary/90 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary shadow-lg hover:shadow-xl">
+                    <span class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        Daftar Sekarang
+                    </span>
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -68,12 +165,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show password requirements when password field is focused
     passwordField.addEventListener('focus', function() {
         requirementsBox.classList.remove('hidden');
+        requirementsBox.classList.add('animate-fade-in');
     });
 
     // Hide password requirements when clicked outside
     document.addEventListener('click', function(event) {
         if (!passwordField.contains(event.target) && !requirementsBox.contains(event.target)) {
             requirementsBox.classList.add('hidden');
+            requirementsBox.classList.remove('animate-fade-in');
         }
     });
 });

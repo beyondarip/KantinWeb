@@ -39,6 +39,7 @@ class CartItem(models.Model):
     def __str__(self):
         return f"{self.menu_item.name} x {self.quantity}"
 
+# orders/models.py
 class Order(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
@@ -49,6 +50,13 @@ class Order(models.Model):
         ('cancelled', 'Cancelled'),
     ]
 
+    PAYMENT_STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('paid', 'Paid'),
+        ('failed', 'Failed'),
+        ('expired', 'Expired'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     merchant = models.ForeignKey(Merchant, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
@@ -56,6 +64,9 @@ class Order(models.Model):
     note = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='pending')
+    midtrans_id = models.CharField(max_length=100, blank=True)
+    payment_url = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return f"Order #{self.id} - {self.user.username}"

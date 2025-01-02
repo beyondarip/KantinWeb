@@ -9,18 +9,14 @@
         <div class="mb-12">
             <div class="flex items-center justify-center space-x-12">
                 <div class="flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-secondary text-white font-medium">
-                        1
-                    </div>
+                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-secondary text-white font-medium">1</div>
                     <span class="ml-2 font-medium text-secondary">Checkout</span>
                 </div>
                 <div class="flex-1 h-0.5 bg-gray-200">
                     <div class="w-1/2 h-full bg-secondary"></div>
                 </div>
                 <div class="flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-500 font-medium">
-                        2
-                    </div>
+                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-500 font-medium">2</div>
                     <span class="ml-2 font-medium text-gray-500">Pembayaran</span>
                 </div>
             </div>
@@ -34,7 +30,7 @@
                         <h2 class="font-heading text-xl font-semibold text-primary">Informasi Pengiriman</h2>
                     </div>
 
-                    <form method="post" class="p-6 space-y-6">
+                    <form method="post" id="checkoutForm" class="p-6 space-y-6">
                         {% csrf_token %}
                         
                         <!-- Delivery Type -->
@@ -90,7 +86,7 @@
                             </div>
                         </div>
 
-                        <!-- Delivery Details (shown/hidden based on delivery type) -->
+                        <!-- Delivery Details -->
                         <div id="deliveryDetails" class="hidden">
                             <h3 class="text-lg font-medium text-primary mb-4">Alamat Pengiriman</h3>
                             <div class="space-y-4">
@@ -117,6 +113,14 @@
                                        class="w-full rounded-lg border-gray-300 focus:border-secondary focus:ring-secondary"
                                        placeholder="Contoh: Tolong dibungkus terpisah">
                             </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="mt-6">
+                            <button type="submit" 
+                                    class="w-full py-3 px-4 rounded-lg text-center font-medium text-white bg-secondary hover:bg-secondary/90 transition-colors">
+                                Lanjut ke Pembayaran
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -169,42 +173,35 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Checkout Button -->
-                        <div class="mt-6">
-                            <button type="submit" 
-                                    class="w-full py-3 px-4 rounded-lg text-center font-medium text-white bg-secondary hover:bg-secondary/90 transition-colors">
-                                Lanjut ke Pembayaran
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
 
 {% block extra_js %}
-<script>
+<script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
     const deliveryTypeInputs = document.querySelectorAll('input[name="delivery_type"]');
     const deliveryDetails = document.getElementById('deliveryDetails');
     const pickupDetails = document.getElementById('pickupDetails');
     const deliveryFee = document.querySelector('.delivery-fee');
     const orderTotal = document.getElementById('orderTotal');
-    const baseTotal = {{ cart.get_total_amount|add:2000 }};
+    const baseTotal = parseInt("{{ cart.get_total_amount|add:2000 }}");
 
     function updateDeliverySection(deliveryType) {
         if (deliveryType === 'delivery') {
             deliveryDetails.classList.remove('hidden');
             pickupDetails.classList.add('hidden');
             deliveryFee.classList.remove('hidden');
-            orderTotal.textContent = `Rp ${(baseTotal + 10000).toLocaleString()}`;
+            orderTotal.textContent = 'Rp ' + (baseTotal + 10000).toLocaleString('id-ID');
         } else {
             deliveryDetails.classList.add('hidden');
             pickupDetails.classList.remove('hidden');
             deliveryFee.classList.add('hidden');
-            orderTotal.textContent = `Rp ${baseTotal.toLocaleString()}`;
+            orderTotal.textContent = 'Rp ' + baseTotal.toLocaleString('id-ID');
         }
     }
 
@@ -216,7 +213,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize with default selection
     updateDeliverySection(document.querySelector('input[name="delivery_type"]:checked').value);
+
+    // Form validation
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        const deliveryType = document.querySelector('input[name="delivery_type"]:checked').value;
+        const name = document.querySelector('input[name="name"]').value.trim();
+        const phone = document.querySelector('input[name="phone"]').value.trim();
+
+        if (!name || !phone) {
+            e.preventDefault();
+            alert('Mohon lengkapi data kontak');
+            return;
+        }
+
+        if (deliveryType === 'delivery') {
+            const address = document.querySelector('textarea[name="address"]').value.trim();
+            if (!address) {
+                e.preventDefault();
+                alert('Mohon lengkapi alamat pengiriman');
+                return;
+            }
+        }
+    });
 });
 </script>
-{% endblock %}
 {% endblock %}

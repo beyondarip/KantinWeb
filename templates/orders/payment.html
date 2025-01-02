@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Pembayaran - KantinKu{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-neutral py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Order Summary Card -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-heading font-semibold text-primary">Order #{{ order.id }}</h2>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary/10 text-secondary">
+                        {{ order.get_status_display }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="p-6">
+                <!-- Order Items -->
+                <div class="space-y-4 mb-6">
+                    {% for item in order.orderitem_set.all %}
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <span class="text-sm font-medium text-gray-900">{{ item.menu_item.name }}</span>
+                            <span class="text-sm text-gray-500 ml-2">x{{ item.quantity }}</span>
+                        </div>
+                        <span class="text-sm font-medium text-gray-900">Rp {{ item.subtotal|floatformat:0 }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Total -->
+                <div class="border-t border-gray-200 pt-4">
+                    <div class="flex justify-between">
+                        <span class="text-base font-medium text-gray-900">Total Pembayaran</span>
+                        <span class="text-base font-semibold text-primary">Rp {{ order.total_amount|floatformat:0 }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Button -->
+        <div class="text-center">
+            <button id="pay-button" 
+                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                Bayar Sekarang
+            </button>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ midtrans_client_key }}"></script>
+<script type="text/javascript">
+    document.getElementById('pay-button').onclick = function() {
+        window.snap.pay('{{ order.midtrans_id  }}', {
+            onSuccess: function(result) {
+        window.location.href = "{% url 'orders:payment_success' %}";
+    },
+            onPending: function(result) {
+                alert("Pembayaran pending!");
+            },
+            onError: function(result) {
+                alert("Pembayaran gagal!");
+            },
+            onClose: function() {
+                alert('Anda menutup popup tanpa menyelesaikan pembayaran');
+            }
+        });
+    };
+</script>
+{% endblock %}
+{% endblock %}

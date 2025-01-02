@@ -171,6 +171,14 @@ LOGIN_REDIRECT_URL = 'merchants:home'
 LOGOUT_REDIRECT_URL = 'merchants:home'
 
 # Midtrans Settings
-MIDTRANS_SERVER_KEY = 'SB-Mid-server-XXXXXXXXXXXXXXXX'  # Ganti dengan server key Anda
-MIDTRANS_CLIENT_KEY = 'SB-Mid-client-XXXXXXXXXXXXXXXX'  # Ganti dengan client key Anda
-MIDTRANS_IS_PRODUCTION = False
+from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+# Load .env file
+load_dotenv()
+
+# Kemudian gunakan os.getenv untuk mengambil value
+MIDTRANS_SERVER_KEY = os.getenv('MIDTRANS_SERVER_KEY')
+MIDTRANS_CLIENT_KEY = os.getenv('MIDTRANS_CLIENT_KEY')
+MIDTRANS_IS_PRODUCTION = os.getenv('DEBUG')

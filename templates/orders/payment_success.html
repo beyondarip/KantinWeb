@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Pembayaran Berhasil - KantinKu{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-neutral py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <!-- Success Header -->
+            <div class="p-8 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-success/10 mb-6">
+                    <svg class="w-8 h-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-heading font-bold text-primary mb-4">Pembayaran Berhasil!</h1>
+                <p class="text-gray-600">Terima kasih telah melakukan pemesanan di KantinKu.</p>
+            </div>
+
+            {% if order %}
+            <!-- Order Details -->
+            <div class="border-t border-gray-200">
+                <div class="p-6">
+                    <h2 class="font-heading text-lg font-semibold text-primary mb-4">Detail Pesanan</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Order ID</span>
+                            <span class="font-medium text-primary">#{{ order.id }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Total Pembayaran</span>
+                            <span class="font-medium text-primary">Rp {{ order.total_amount|floatformat:0 }}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600">Status</span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-success/10 text-success">
+                                {{ order.get_status_display }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Action Buttons -->
+            <div class="p-6 bg-gray-50 flex justify-center space-x-4">
+                <a href="{% url 'merchants:home' %}" 
+                   class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-secondary hover:bg-secondary/90 transition-colors">
+                    Kembali ke Beranda
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
