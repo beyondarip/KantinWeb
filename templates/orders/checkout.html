@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - KantinKu{% endblock %}
+
+{% block content %}
+<div class="bg-neutral min-h-screen py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Progress Steps -->
+        <div class="mb-12">
+            <div class="flex items-center justify-center space-x-12">
+                <div class="flex items-center">
+                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-secondary text-white font-medium">
+                        1
+                    </div>
+                    <span class="ml-2 font-medium text-secondary">Checkout</span>
+                </div>
+                <div class="flex-1 h-0.5 bg-gray-200">
+                    <div class="w-1/2 h-full bg-secondary"></div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-500 font-medium">
+                        2
+                    </div>
+                    <span class="ml-2 font-medium text-gray-500">Pembayaran</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Checkout Form -->
+            <div class="lg:col-span-8">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="font-heading text-xl font-semibold text-primary">Informasi Pengiriman</h2>
+                    </div>
+
+                    <form method="post" class="p-6 space-y-6">
+                        {% csrf_token %}
+                        
+                        <!-- Delivery Type -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-4">Pilih Tipe Pengambilan</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="relative border rounded-lg p-4 cursor-pointer hover:border-secondary focus-within:ring-2 focus-within:ring-secondary">
+                                    <input type="radio" name="delivery_type" value="pickup" class="sr-only" checked>
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0">
+                                            <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
+                                            </svg>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium text-primary">Ambil Sendiri</p>
+                                            <p class="text-sm text-gray-500">Ambil pesanan di merchant</p>
+                                        </div>
+                                    </div>
+                                </label>
+
+                                <label class="relative border rounded-lg p-4 cursor-pointer hover:border-secondary focus-within:ring-2 focus-within:ring-secondary">
+                                    <input type="radio" name="delivery_type" value="delivery" class="sr-only">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0">
+                                            <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium text-primary">Diantar</p>
+                                            <p class="text-sm text-gray-500">Diantar ke lokasi Anda</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div>
+                            <h3 class="text-lg font-medium text-primary mb-4">Informasi Kontak</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                                    <input type="text" name="name" required 
+                                           class="w-full rounded-lg border-gray-300 focus:border-secondary focus:ring-secondary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Telepon</label>
+                                    <input type="tel" name="phone" required 
+                                           class="w-full rounded-lg border-gray-300 focus:border-secondary focus:ring-secondary">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Details (shown/hidden based on delivery type) -->
+                        <div id="deliveryDetails" class="hidden">
+                            <h3 class="text-lg font-medium text-primary mb-4">Alamat Pengiriman</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap</label>
+                                    <textarea name="address" rows="3" 
+                                              class="w-full rounded-lg border-gray-300 focus:border-secondary focus:ring-secondary"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Catatan untuk Pengantar</label>
+                                    <input type="text" name="delivery_notes" 
+                                           class="w-full rounded-lg border-gray-300 focus:border-secondary focus:ring-secondary"
+                                           placeholder="Contoh: Gedung A, Lantai 2">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pickup Details -->
+                        <div id="pickupDetails">
+                            <h3 class="text-lg font-medium text-primary mb-4">Informasi Pengambilan</h3>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Catatan untuk Merchant</label>
+                                <input type="text" name="pickup_notes" 
+                                       class="w-full rounded-lg border-gray-300 focus:border-secondary focus:ring-secondary"
+                                       placeholder="Contoh: Tolong dibungkus terpisah">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="lg:col-span-4">
+                <div class="bg-white rounded-xl shadow-sm">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="font-heading text-xl font-semibold text-primary">Ringkasan Pesanan</h2>
+                    </div>
+
+                    <div class="p-6">
+                        <!-- Order Items -->
+                        <div class="space-y-4 mb-6">
+                            {% for item in cart.items.all %}
+                            <div class="flex items-center">
+                                <img src="{% if item.menu_item.image %}{{ item.menu_item.image.url }}{% else %}https://placehold.co/100x100?text=Menu{% endif %}" 
+                                     alt="{{ item.menu_item.name }}"
+                                     class="w-16 h-16 rounded-lg object-cover">
+                                <div class="ml-4 flex-1">
+                                    <h4 class="text-sm font-medium text-primary">{{ item.menu_item.name }}</h4>
+                                    <p class="text-sm text-gray-500">{{ item.quantity }}x @ Rp {{ item.menu_item.price|floatformat:0 }}</p>
+                                </div>
+                                <span class="text-sm font-medium text-primary">Rp {{ item.get_subtotal|floatformat:0 }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Price Breakdown -->
+                        <div class="space-y-3 border-t border-gray-200 pt-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Subtotal</span>
+                                <span class="font-medium text-primary">Rp {{ cart.get_total_amount|floatformat:0 }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Biaya Layanan</span>
+                                <span class="font-medium text-primary">Rp 2.000</span>
+                            </div>
+                            <div class="flex justify-between text-sm delivery-fee hidden">
+                                <span class="text-gray-600">Biaya Antar</span>
+                                <span class="font-medium text-primary">Rp 10.000</span>
+                            </div>
+                            <div class="border-t border-gray-200 pt-3">
+                                <div class="flex justify-between">
+                                    <span class="text-base font-medium text-primary">Total</span>
+                                    <span class="text-base font-semibold text-primary" id="orderTotal">
+                                        Rp {{ cart.get_total_amount|add:2000|floatformat:0 }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Checkout Button -->
+                        <div class="mt-6">
+                            <button type="submit" 
+                                    class="w-full py-3 px-4 rounded-lg text-center font-medium text-white bg-secondary hover:bg-secondary/90 transition-colors">
+                                Lanjut ke Pembayaran
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const deliveryTypeInputs = document.querySelectorAll('input[name="delivery_type"]');
+    const deliveryDetails = document.getElementById('deliveryDetails');
+    const pickupDetails = document.getElementById('pickupDetails');
+    const deliveryFee = document.querySelector('.delivery-fee');
+    const orderTotal = document.getElementById('orderTotal');
+    const baseTotal = {{ cart.get_total_amount|add:2000 }};
+
+    function updateDeliverySection(deliveryType) {
+        if (deliveryType === 'delivery') {
+            deliveryDetails.classList.remove('hidden');
+            pickupDetails.classList.add('hidden');
+            deliveryFee.classList.remove('hidden');
+            orderTotal.textContent = `Rp ${(baseTotal + 10000).toLocaleString()}`;
+        } else {
+            deliveryDetails.classList.add('hidden');
+            pickupDetails.classList.remove('hidden');
+            deliveryFee.classList.add('hidden');
+            orderTotal.textContent = `Rp ${baseTotal.toLocaleString()}`;
+        }
+    }
+
+    deliveryTypeInputs.forEach(input => {
+        input.addEventListener('change', (e) => {
+            updateDeliverySection(e.target.value);
+        });
+    });
+
+    // Initialize with default selection
+    updateDeliverySection(document.querySelector('input[name="delivery_type"]:checked').value);
+});
+</script>
+{% endblock %}
+{% endblock %}

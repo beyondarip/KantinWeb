@@ -170,3 +170,7 @@ LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'merchants:home'
 LOGOUT_REDIRECT_URL = 'merchants:home'
 
+# Midtrans Settings
+MIDTRANS_SERVER_KEY = 'SB-Mid-server-XXXXXXXXXXXXXXXX'  # Ganti dengan server key Anda
+MIDTRANS_CLIENT_KEY = 'SB-Mid-client-XXXXXXXXXXXXXXXX'  # Ganti dengan client key Anda
+MIDTRANS_IS_PRODUCTION = False

@@ -5,25 +5,78 @@
 {% block content %}
 <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
-        <div>
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Buat akun baru</h2>
+        <div class="text-center">
+            <h2 class="text-3xl font-heading font-bold text-primary">Buat Akun Baru</h2>
+            <p class="mt-2 text-sm text-gray-600">Atau 
+                <a href="{% url 'accounts:login' %}" class="font-medium text-secondary hover:text-secondary/80">
+                    masuk ke akun yang sudah ada
+                </a>
+            </p>
         </div>
-        <form class="mt-8 space-y-6" method="POST">
+
+        <form method="POST" class="mt-8 space-y-6">
             {% csrf_token %}
-            {{ form.as_p }}
-            <div>
-                <button type="submit"
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                    Daftar
-                </button>
+            
+            <div class="space-y-4">
+                {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="mt-1">
+                        {% for error in field.errors %}
+                        <p class="text-sm text-danger flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                            {{ error }}
+                        </p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
             </div>
 
-            <div class="text-sm text-center">
-                <a href="{% url 'accounts:login' %}" class="font-medium text-primary hover:text-primary-dark">
-                    Sudah punya akun? Login
-                </a>
+            <!-- Password Requirements (shown only when password field is focused) -->
+            <div id="password-requirements" class="hidden">
+                <h4 class="text-sm font-medium text-gray-700 mb-2">Password harus memenuhi kriteria berikut:</h4>
+                <ul class="text-sm text-gray-600 space-y-1 ml-5 list-disc">
+                    <li>Minimal 8 karakter</li>
+                    <li>Tidak boleh terlalu mirip dengan informasi pribadi anda</li>
+                    <li>Tidak boleh password yang umum digunakan</li>
+                    <li>Tidak boleh berisi angka saja</li>
+                </ul>
             </div>
+
+            <button type="submit" 
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
+                Daftar Sekarang
+            </button>
         </form>
     </div>
 </div>
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordField = document.getElementById('id_password1');
+    const requirementsBox = document.getElementById('password-requirements');
+
+    // Show password requirements when password field is focused
+    passwordField.addEventListener('focus', function() {
+        requirementsBox.classList.remove('hidden');
+    });
+
+    // Hide password requirements when clicked outside
+    document.addEventListener('click', function(event) {
+        if (!passwordField.contains(event.target) && !requirementsBox.contains(event.target)) {
+            requirementsBox.classList.add('hidden');
+        }
+    });
+});
+</script>
+{% endblock %}
 {% endblock %}
