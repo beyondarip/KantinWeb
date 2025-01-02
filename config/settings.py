@@ -34,7 +34,9 @@ SECRET_KEY = 'django-insecure-k6xr#f&67#&2$miiso!4o8r@b-44u3ih00_2r@xguysozz_d#d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['*', '.railway.app']
 
 
 # Application definition
@@ -62,6 +64,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+       'whitenoise.middleware.WhiteNoiseMiddleware',  # Tambahkan ini
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -97,13 +101,21 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # }
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kantin_online',
-        'USER': 'root',
-        'PASSWORD': '', 
-        'HOST': 'localhost',
-        'PORT': '3306',
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'kantin_online',
+    #     'USER': 'root',
+    #     'PASSWORD': '', 
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    # }
+       'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('PGDATABASE'),
+        'USER': os.getenv('PGUSER'),
+        'PASSWORD': os.getenv('PGPASSWORD'),
+        'HOST': os.getenv('PGHOST'),
+        'PORT': os.getenv('PGPORT'),
     }
 }
 
@@ -156,6 +168,8 @@ DEBUG = os.getenv('DEBUG') == 'True'
 
 # Static files setup
 STATIC_URL = '/static/'
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
