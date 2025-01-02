@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Detail Pesanan #{{ order.id }} - KantinKu{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-neutral py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <!-- Header -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-heading font-semibold text-primary">Invoice #{{ order.id }}</h2>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
+                        {% if order.status == 'paid' %}bg-success/10 text-success
+                        {% elif order.status == 'pending' %}bg-warning/10 text-warning
+                        {% else %}bg-gray-100 text-gray-800{% endif %}">
+                        {{ order.get_status_display }}
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600">{{ order.created_at|date:"d F Y, H:i" }}</p>
+            </div>
+
+            <!-- QR Code -->
+            <div class="p-6 border-b border-gray-200 text-center">
+                <div class="inline-block p-4 bg-gray-50 rounded-lg mb-4">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ORDER-{{ order.id }}" 
+                         alt="QR Code" class="w-32 h-32">
+                </div>
+                <p class="text-sm text-gray-600">Tunjukkan QR Code ini ke merchant saat mengambil pesanan</p>
+            </div>
+
+            <!-- Order Details -->
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="font-medium text-primary mb-4">Detail Pesanan</h3>
+                <div class="space-y-4">
+                    <!-- Merchant Info -->
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">Merchant</span>
+                        <span class="font-medium text-primary">{{ order.merchant.name }}</span>
+                    </div>
+
+                    <!-- Customer Info from order.note -->
+                    {% with customer_info=order.note|split_customer_info %}
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">Nama</span>
+                        <span class="font-medium text-primary">{{ customer_info.name }}</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">Telepon</span>
+                        <span class="font-medium text-primary">{{ customer_info.phone }}</span>
+                    </div>
+                    {% if customer_info.notes %}
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">Catatan</span>
+                        <span class="font-medium text-primary">{{ customer_info.notes }}</span>
+                    </div>
+                    {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+
+            <!-- Order Items -->
+            <div class="p-6">
+                <h3 class="font-medium text-primary mb-4">Item Pesanan</h3>
+                <div class="space-y-4">
+                    {% for item in order.orderitem_set.all %}
+                    <div class="flex justify-between items-center">
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-primary">{{ item.menu_item.name }}</p>
+                            <p class="text-sm text-gray-500">{{ item.quantity }}x @ Rp {{ item.price|floatformat:0 }}</p>
+                        </div>
+                        <span class="text-sm font-medium text-primary">Rp {{ item.subtotal|floatformat:0 }}</span>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Totals -->
+                    <div class="border-t border-gray-200 pt-4 mt-4">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Subtotal</span>
+                            <span class="font-medium text-primary">Rp {{ order.total_amount|subtract:2000|floatformat:0 }}</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-600">Biaya Layanan</span>
+                            <span class="font-medium text-primary">Rp 2.000</span>
+                        </div>
+                        <div class="flex justify-between text-base font-medium mt-2">
+                            <span class="text-primary">Total</span>
+                            <span class="text-primary">Rp {{ order.total_amount|floatformat:0 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="p-6 bg-gray-50 flex justify-center space-x-4">
+                <a href="{% url 'merchants:home' %}" 
+                   class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    Kembali ke Beranda
+                </a>
+                <a href="{% url 'orders:order_detail' order.id %}" 
+                   class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-secondary hover:bg-secondary/90">
+                    Lihat Detail Pesanan
+                </a>
+                <button onclick="window.print()" 
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                    </svg>
+                    Cetak Invoice
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

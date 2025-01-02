@@ -45,9 +45,15 @@
             <!-- Action Buttons -->
             <div class="p-6 bg-gray-50 flex justify-center space-x-4">
                 <a href="{% url 'merchants:home' %}" 
-                   class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-secondary hover:bg-secondary/90 transition-colors">
+                   class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                     Kembali ke Beranda
                 </a>
+                {% if order %}
+                <a href="{% url 'orders:order_detail' order.id %}" 
+                   class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-secondary hover:bg-secondary/90">
+                    Lihat Detail Pesanan
+                </a>
+                {% endif %}
             </div>
         </div>
     </div>

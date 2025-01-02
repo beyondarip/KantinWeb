@@ -39,6 +39,9 @@ class CartItem(models.Model):
     def __str__(self):
         return f"{self.menu_item.name} x {self.quantity}"
 
+from django.db import models
+from django.utils import timezone
+
 # orders/models.py
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -70,6 +73,12 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order #{self.id} - {self.user.username}"
+
+        
+    @property
+    def is_expired(self):
+        """Check if order is older than 24 hours"""
+        return timezone.now() > self.created_at + timedelta(hours=24)
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)

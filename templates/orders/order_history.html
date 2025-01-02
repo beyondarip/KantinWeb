@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Riwayat Pesanan - KantinKu{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-neutral py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-2xl font-bold text-primary mb-8">Riwayat Pesanan</h1>
+
+        {% if orders %}
+        <div class="space-y-6">
+            {% for order in orders %}
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-medium text-primary">Order #{{ order.id }}</h3>
+                            <p class="text-sm text-gray-500">{{ order.created_at|date:"d F Y, H:i" }}</p>
+                        </div>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
+                            {% if order.status == 'paid' %}bg-success/10 text-success
+                            {% elif order.status == 'pending' %}bg-warning/10 text-warning
+                            {% else %}bg-gray-100 text-gray-800{% endif %}">
+                            {{ order.get_status_display }}
+                        </span>
+                    </div>
+
+                    <div class="border-t border-gray-200 pt-4">
+                        <!-- Merchant Info -->
+                        <div class="mb-4">
+                            <p class="text-sm font-medium text-primary">{{ order.merchant.name }}</p>
+                            <p class="text-sm text-gray-500">Total: Rp {{ order.total_amount|floatformat:0 }}</p>
+                        </div>
+
+                        <!-- Items Summary -->
+                        <div class="text-sm text-gray-600">
+                            {% for item in order.orderitem_set.all %}
+                            {{ item.menu_item.name }} x{{ item.quantity }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-4 flex justify-end space-x-3">
+                        {% if order.status == 'paid' and not order.is_expired %}
+                        <a href="{% url 'orders:order_detail' order.id %}" 
+                           class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-secondary hover:bg-secondary/90">
+                            Lihat Bukti Pembayaran
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if orders.has_other_pages %}
+        <div class="mt-8 flex justify-center">
+            <nav class="inline-flex rounded-lg shadow">
+                {% if orders.has_previous %}
+                <a href="?page={{ orders.previous_page_number }}" 
+                   class="px-3 py-2 rounded-l-lg border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    Previous
+                </a>
+                {% endif %}
+
+                {% if orders.has_next %}
+                <a href="?page={{ orders.next_page_number }}"
+                   class="px-3 py-2 rounded-r-lg border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    Next
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="text-center py-12 bg-white rounded-xl shadow-sm">
+            <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">Belum Ada Pesanan</h3>
+            <p class="text-gray-500 mb-6">Anda belum memiliki riwayat pesanan.</p>
+            <a href="{% url 'merchants:merchant_list' %}" 
+               class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-secondary hover:bg-secondary/90">
+                Mulai Pesan
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
