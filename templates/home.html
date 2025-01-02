@@ -4,39 +4,310 @@
 
 {% block content %}
 <!-- Hero Section dengan parallax effect -->
-<section class="relative h-[600px] flex items-center overflow-hidden">
-   
-    <!-- Background Image with Overlay -->
-    <div class="absolute inset-0">
-        <img src="{% static 'images/hero.jpg' %}" alt="Hero Background" class="w-full h-full object-cover object-center">
-        <div class="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
+<!-- Hero Section dengan parallax effect -->
+<section class="relative min-h-[600px] flex items-center overflow-hidden bg-primary">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 overflow-hidden opacity-10">
+        <div class="absolute h-full w-full" id="hero-pattern"></div>
+    </div>
+
+<!-- Particles Container -->
+<div class="absolute inset-0 overflow-hidden">
+    <div id="particles-container" class="relative w-full h-full"></div>
+</div>
+
+    <!-- Gradient Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-b from-primary via-primary/95 to-primary/90"></div>
+
+    <!-- Floating Elements -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="floating-circle absolute w-72 h-72 bg-secondary/10 rounded-full blur-3xl -top-10 -right-10"></div>
+        <div class="floating-circle absolute w-96 h-96 bg-accent/10 rounded-full blur-3xl -bottom-20 -left-20"></div>
     </div>
 
     <!-- Hero Content -->
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div class="lg:w-2/3">
-            <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-                Pesan Makanan Kampus Tanpa Antri
-            </h1>
-            <p class="text-lg md:text-xl text-gray-200 mb-8">
-                Sedang kuliah atau mengajar? Pesan sekarang, ambil nanti. Tidak perlu antri dan khawatir kehabisan menu favorit Anda.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4">
-                <a href="{% url 'merchants:merchant_list' %}" 
-                   class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-secondary hover:bg-secondary/90 transition duration-150 ease-in-out shadow-lg hover:shadow-xl">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                    Pesan Sekarang
-                </a>
-                <a href="#how-it-works" 
-                   class="inline-flex items-center justify-center px-6 py-3 border-2 border-white text-base font-medium rounded-lg text-white hover:bg-white hover:text-primary transition duration-150 ease-in-out">
-                    Cara Pesan
-                </a>
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <!-- Left Content -->
+            <div class="text-center lg:text-left" data-aos="fade-right">
+                <div class="inline-flex items-center px-4 py-2 bg-secondary/10 rounded-full mb-6">
+                    <span class="animate-pulse w-2 h-2 rounded-full bg-secondary mr-2"></span>
+                    <span class="text-sm font-medium text-secondary">Sistem Pemesanan Online</span>
+                </div>
+
+                <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+                    <span class="block mb-2">Pesan Makanan</span>
+                    <span class="block">Kampus
+                        <span class="relative inline-block">
+                            Tanpa Antri
+                            <div class="absolute bottom-2 left-0 w-full h-2 bg-gradient-to-r from-secondary/80 to-secondary/40 rounded-full"></div>
+                        </span>
+                    </span>
+                </h1>
+
+                <p class="text-lg md:text-xl text-gray-300 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                    Sedang kuliah atau mengajar? Pesan sekarang, ambil nanti. 
+                    Tidak perlu antri dan khawatir kehabisan menu favorit Anda.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="{% url 'merchants:merchant_list' %}" 
+                       class="group relative inline-flex items-center justify-center px-8 py-3.5 bg-secondary text-white font-medium rounded-xl overflow-hidden transition-all duration-300 hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-r from-secondary via-secondary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            Pesan Sekarang
+                        </div>
+                    </a>
+
+                    <a href="#how-it-works" 
+                       class="group relative inline-flex items-center justify-center px-8 py-3.5 border-2 border-white/20 text-white font-medium rounded-xl overflow-hidden transition-all duration-300 hover:border-white/40">
+                        <span>Cara Pesan</span>
+                    </a>
+                </div>
+
+                <!-- Trust Indicators -->
+                <div class="mt-12 grid grid-cols-2 md:grid-cols-3 gap-6">
+                    <div class="flex items-center justify-center lg:justify-start space-x-2">
+                        <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-secondary/10">
+                            <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        </div>
+                        <div class="text-left">
+                            <div class="text-2xl font-bold text-white">10rb+</div>
+                            <div class="text-sm text-gray-400">Pengguna Aktif</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-center lg:justify-start space-x-2">
+                        <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-secondary/10">
+                            <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                        </div>
+                        <div class="text-left">
+                            <div class="text-2xl font-bold text-white">15+</div>
+                            <div class="text-sm text-gray-400">Kantin Partner</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-center lg:justify-start space-x-2">
+                        <div class="w-12 h-12 flex items-center justify-center rounded-xl bg-secondary/10">
+                            <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                            </svg>
+                        </div>
+                        <div class="text-left">
+                            <div class="text-2xl font-bold text-white">4.9</div>
+                            <div class="text-sm text-gray-400">Rating App</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Content - Preview Card -->
+            <div class="relative lg:ml-12" data-aos="fade-left">
+                <div class="relative bg-white/5 backdrop-blur-xl rounded-2xl p-8 border border-white/10">
+                    <!-- App Preview Content -->
+                    <div class="absolute top-4 left-4 right-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="text-sm text-gray-400">preview.kantinku.app</div>
+                    </div>
+
+                    <div class="mt-8 space-y-6">
+                        <!-- Menu Preview -->
+                        <div class="space-y-4">
+                           <!-- Menu Preview Item -->
+<div class="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+    <div class="flex items-center space-x-4">
+        <!-- Image Container dengan fixed size dan object-fit -->
+        <div class="w-16 h-16 bg-secondary/20 rounded-lg overflow-hidden flex items-center justify-center">
+            <!-- class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" -->
+            <!-- <div class="absolute inset-0 bg-gradient-to-r from-secondary/20 to-secondary/30 animate-pulse" 
+            id="skeleton-loader"
+            style="display: none;">
+       </div> -->
+            <img src="{% static 'images/makan1.webp' %}" 
+                 alt="Nasi Goreng Special"
+                 class="w-full h-full object-cover" 
+               
+                 onerror="this.src='https://placehold.co/64x64?text=Menu';this.onerror=null;">
+        </div>
+        <div>
+            <h3 class="text-white font-medium">Nasi Goreng Special</h3>
+            <p class="text-gray-400 text-sm">Rp 15.000</p>
+        </div>
+    </div>
+    <button class="px-4 py-2 bg-secondary/20 text-secondary rounded-lg text-sm">
+        Pesan
+    </button>
+</div>
+<div class="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+    <div class="flex items-center space-x-4">
+        <!-- Image Container dengan fixed size dan object-fit -->
+        <div class="w-16 h-16 bg-secondary/20 rounded-lg overflow-hidden flex items-center justify-center">
+            <!-- class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300" -->
+            <!-- <div class="absolute inset-0 bg-gradient-to-r from-secondary/20 to-secondary/30 animate-pulse" 
+            id="skeleton-loader"
+            style="display: none;">
+       </div> -->
+            <img src="{% static 'images/makan2.webp' %}" 
+                 alt="Nasi Goreng Special"
+                 class="w-full h-full object-cover" 
+               
+                 onerror="this.src='https://placehold.co/64x64?text=Menu';this.onerror=null;">
+        </div>
+        <div>
+            <h3 class="text-white font-medium">Paket Ramadhan Special</h3>
+            <p class="text-gray-400 text-sm">Rp 15.000</p>
+        </div>
+    </div>
+    <button class="px-4 py-2 bg-secondary/20 text-secondary rounded-lg text-sm">
+        Pesan
+    </button>
+</div>
+
+                            <!-- <div class="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-16 h-16 bg-secondary/20 rounded-lg"></div>
+                                    <div>
+                                        <h3 class="text-white font-medium">Ayam Geprek</h3>
+                                        <p class="text-gray-400 text-sm">Rp 12.000</p>
+                                    </div>
+                                </div>
+                                <button class="px-4 py-2 bg-secondary/20 text-secondary rounded-lg text-sm">
+                                    Pesan
+                                </button>
+                            </div>
+                        </div> -->
+
+                        <!-- Order Status -->
+                        <div class="p-4 bg-white/5 rounded-xl">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-white font-medium">Status Pesanan</h3>
+                                <span class="px-3 py-1 bg-success/20 text-success rounded-full text-xs">
+                                    Diproses
+                                </span>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute inset-0 flex items-center">
+                                    <div class="h-0.5 w-full bg-gray-700"></div>
+                                </div>
+                                <div class="relative flex justify-between">
+                                    <div>
+                                        <div class="w-4 h-4 bg-success rounded-full"></div>
+                                        <p class="mt-2 text-xs text-gray-400">Order</p>
+                                    </div>
+                                    <div>
+                                        <div class="w-4 h-4 bg-success rounded-full"></div>
+                                        <p class="mt-2 text-xs text-gray-400">Process</p>
+                                    </div>
+                                    <div>
+                                        <div class="w-4 h-4 bg-white/20 rounded-full"></div>
+                                        <p class="mt-2 text-xs text-gray-400">Ready</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Update style section -->
+<style>
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.3);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    @keyframes float-particle {
+        0% {
+            transform: translateY(0) translateX(0);
+            opacity: 0;
+        }
+        25% {
+            opacity: 1;
+        }
+        50% {
+            transform: translateY(-100px) translateX(50px);
+            opacity: .5;
+        }
+        75% {
+            opacity: .25;
+        }
+        100% {
+            transform: translateY(-200px) translateX(100px);
+            opacity: 0;
+        }
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(-10px, -20px); }
+    }
+
+    .floating-circle {
+        animation: float 8s ease-in-out infinite;
+    }
+
+    .floating-circle:nth-child(2) {
+        animation-delay: -4s;
+    }
+</style>
+
+<!-- Update script section -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function createParticle() {
+        const particles = document.getElementById('particles-container');
+        if (!particles) return;
+
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Random size between 2-6px
+        const size = Math.random() * 4 + 2;
+        
+        // Random starting position
+        const startX = Math.random() * 100;
+        
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.opacity = '0';
+        particle.style.left = `${startX}%`;
+        particle.style.bottom = '0';
+        particle.style.animation = `float-particle ${Math.random() * 3 + 2}s ease-out forwards`;
+
+        particles.appendChild(particle);
+
+        // Remove particle after animation
+        setTimeout(() => {
+            particle.remove();
+        }, 5000);
+    }
+
+    // Create particles at interval
+    function startParticles() {
+        setInterval(createParticle, 100); // Create new particle every 100ms
+    }
+
+    // Initialize particles
+    startParticles();
+});
+</script>
 
 <!-- Quick Order Options Section -->
 <section class="py-20 bg-white">
