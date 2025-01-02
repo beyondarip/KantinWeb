@@ -35,8 +35,17 @@ class MerchantListView(ListView):
         # Handle category filter
         category = self.request.GET.get('category')
         if category:
-            queryset = queryset.filter(category_id=category)
-            
+            queryset = queryset.filter(categories__id=category)
+        
+        # Handle sorting
+        sort = self.request.GET.get('sort')
+        if sort == 'rating':
+            queryset = queryset.order_by('-rating')
+        elif sort == 'popular':
+            queryset = queryset.order_by('-total_orders')
+        elif sort == 'newest':
+            queryset = queryset.order_by('-created_at')
+                
         return queryset
 
     def get_context_data(self, **kwargs):
