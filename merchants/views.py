@@ -1,6 +1,8 @@
 from django.views.generic import ListView, DetailView
 from django.db.models import Q
 from .models import Merchant, Category, MenuItem
+from .forms import MenuItemForm
+
 
 class HomeView(ListView):
     template_name = 'home.html'
@@ -101,32 +103,27 @@ class MerchantDashboardView(LoginRequiredMixin, ListView):
 
 class MenuItemCreateView(LoginRequiredMixin, CreateView):
     model = MenuItem
+    form_class = MenuItemForm
     template_name = 'merchants/dashboard/menu_form.html'
-    fields = ['category', 'name', 'description', 'price', 'image', 'is_available']
     success_url = reverse_lazy('merchants:dashboard')
-    
+
     def form_valid(self, form):
-        form.instance.merchant = self.request.user.merchant
-        return super().form_valid(form)
+        # Tambahkan merchant sebelum menyimpan
+        try:
+            form.instance.merchant = self.request.user.merchant
+            messages.success(self.request, 'Menu berhasil ditambahkan!')
+            return super().form_valid(form)
+        except Exception as e:
+            messages.error(self.request, f'Gagal menambahkan menu: {str(e)}')
+            return super().form_invalid(form)
     
 # merchants/views.py
 
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
-class MenuItemUpdateView(LoginRequiredMixin, UpdateView):
-    model = MenuItem
-    template_name = 'merchants/dashboard/menu_form.html'
-    fields = ['category', 'name', 'description', 'price', 'image', 'is_available']
-    success_url = reverse_lazy('merchants:dashboard')
-
-    def get_queryset(self):
-        return MenuItem.objects.filter(merchant__user=self.request.user)
-
-    def form_valid(self, form):
-        messages.success(self.request, 'Menu item updated successfully!')
-        return super().form_valid(form)
 
 class MenuItemDeleteView(LoginRequiredMixin, DeleteView):
     model = MenuItem
@@ -142,13 +139,7 @@ class MenuItemDeleteView(LoginRequiredMixin, DeleteView):
     
 # merchants/views.py
 
-from .forms import MenuItemForm
 
-class MenuItemCreateView(LoginRequiredMixin, CreateView):
-    model = MenuItem
-    form_class = MenuItemForm
-    template_name = 'merchants/dashboard/menu_form.html'
-    success_url = reverse_lazy('merchants:dashboard')
 
 class MenuItemUpdateView(LoginRequiredMixin, UpdateView):
     model = MenuItem

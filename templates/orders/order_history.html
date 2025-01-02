@@ -43,12 +43,41 @@
                     <!-- Action Buttons -->
                   <!-- Action Buttons -->
 <div class="mt-4 flex justify-end space-x-3">
-    {% if order.status == 'paid' and not order.is_expired %}
+    <!-- Detail Button - Selalu tampil untuk semua status -->
     <a href="{% url 'orders:order_detail' order.id %}" 
-       class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-secondary hover:bg-secondary/90">
-        Lihat Bukti Pembayaran
+       class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+        </svg>
+        Detail Pesanan
     </a>
+
+    {% if order.status == 'paid' and not order.is_expired %}
+    <!-- Bukti Pembayaran untuk pesanan yang sudah dibayar -->
+    <a href="{% url 'orders:order_detail' order.id %}#payment-proof" 
+       class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-secondary hover:bg-secondary/90">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Bukti Pembayaran
+    </a>
+    {% if order.status == 'ready' %}
+    <!-- QR Code untuk pengambilan pesanan -->
+    <a href="{% url 'orders:order_detail' order.id %}#qr-code"
+       class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-success hover:bg-success/90">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+        </svg>
+        Lihat QR Code
+    </a>
+    {% endif %}
     {% elif order.status == 'pending' %}
+    <!-- Tombol untuk pesanan pending -->
     <div class="flex space-x-3">
         <a href="{% url 'orders:payment' order.id %}" 
            class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-accent hover:bg-accent/90">
