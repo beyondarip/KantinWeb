@@ -102,27 +102,20 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #     }
 # }
 
+os.environ.setdefault("PGDATABASE", "liftoff_dev")
+os.environ.setdefault("PGUSER", "username")
+os.environ.setdefault("PGPASSWORD", "")
+os.environ.setdefault("PGHOST", "localhost")
+os.environ.setdefault("PGPORT", "5432")
+
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'kantin_online',
-    #     'USER': 'root',
-    #     'PASSWORD': '', 
-    #     'HOST': 'localhost',
-    #     'PORT': '3306',
-    # }
-       'default': {
+      'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': os.getenv('PGDATABASE'),
-        # 'USER': os.getenv('PGUSER'),
-        # 'PASSWORD': os.getenv('PGPASSWORD'),
-        # 'HOST': os.getenv('PGHOST'),
-        # 'PORT': os.getenv('PGPORT'),
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'WTruFmBkbBpojGBNIzAzzLWYnqxNcETj',
-        'HOST': 'postgres.railway.internal',
-        'PORT': '5432',
+        'NAME': os.environ["PGDATABASE"],
+        'USER': os.environ["PGUSER"],
+        'PASSWORD': os.environ["PGPASSWORD"],
+        'HOST': os.environ["PGHOST"],
+        'PORT': os.environ["PGPORT"],
     }
 }
 
