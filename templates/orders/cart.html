@@ -3,6 +3,7 @@
 {% block title %}Keranjang - KantinKu{% endblock %}
 
 {% block content %}
+
 <div class="bg-neutral min-h-screen py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between mb-8">
@@ -20,6 +21,13 @@
             <!-- Cart Items -->
             <div class="lg:col-span-8">
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    {% if cart.items.exists %}
+                    <div class="mb-4 p-4 bg-gray-50 rounded-lg">
+                        <h3 class="font-medium text-gray-900">
+                            {{ cart.items.first.menu_item.merchant.name }}
+                        </h3>
+                    </div>
+                    {% endif %}
                     <ul class="divide-y divide-gray-200">
                         {% for item in cart.items.all %}
                         <li class="p-6" id="cart-item-{{ item.id }}">

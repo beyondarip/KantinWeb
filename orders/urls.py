@@ -14,5 +14,7 @@ urlpatterns = [
     path('payment/success/', views.payment_success, name='payment_success'),
     path('order/<int:order_id>/', views.order_detail, name='order_detail'),
     path('history/', views.order_history, name='order_history'),  #
-
+    # Di urls.py, tambahkan path ini
+# orders/urls.py 
+path('cancel/<int:order_id>/', views.cancel_order, name='cancel_order'),
 ]

@@ -26,12 +26,25 @@ class Cart(models.Model):
     def __str__(self):
         return f"Cart - {self.user.username}"
 
+from django.core.exceptions import ValidationError
+
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE)
     menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def clean(self):
+        # Check if cart already has items from different merchant
+        if self.cart.items.exists():
+            first_item = self.cart.items.first()
+            if first_item.menu_item.merchant != self.menu_item.merchant:
+                raise ValidationError("Tidak bisa menambahkan menu dari kantin berbeda")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
     def get_subtotal(self):
         return self.menu_item.price * self.quantity
@@ -70,6 +83,12 @@ class Order(models.Model):
     payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='pending')
     midtrans_id = models.CharField(max_length=100, blank=True)
     payment_url = models.CharField(max_length=255, blank=True)
+    expired_at = models.DateTimeField(null=True, blank=True)
+        
+    def cancel(self):
+        self.status = 'cancelled'
+        self.payment_status = 'expired'
+        self.save()
 
     def __str__(self):
         return f"Order #{self.id} - {self.user.username}"

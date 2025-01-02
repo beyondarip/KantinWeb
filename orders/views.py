@@ -28,25 +28,33 @@ def view_cart(request):
     return render(request, 'orders/cart.html', {'cart': cart})
 
 @login_required
-@require_POST
+@require_POST 
 def add_to_cart(request, item_id):
-    cart, created = Cart.objects.get_or_create(user=request.user)
-    menu_item = get_object_or_404(MenuItem, id=item_id)
-    
-    cart_item, created = CartItem.objects.get_or_create(
-        cart=cart,
-        menu_item=menu_item,
-        defaults={'quantity': 1}
-    )
-    
-    if not created:
-        cart_item.quantity += 1
-        cart_item.save()
-    
-    return JsonResponse({
-        'success': True,
-        'cart_count': cart.items.count()
-    })
+    try:
+        cart, _ = Cart.objects.get_or_create(user=request.user)
+        menu_item = get_object_or_404(MenuItem, id=item_id)
+        
+        # Create or update cart item 
+        cart_item, created = CartItem.objects.get_or_create(
+            cart=cart,
+            menu_item=menu_item,
+            defaults={'quantity': 1}
+        )
+        
+        if not created:
+            cart_item.quantity += 1
+            cart_item.save()
+
+        return JsonResponse({
+            'success': True,
+            'cart_count': cart.items.count()
+        })
+
+    except ValidationError as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=400)
 
 @login_required
 @require_POST
@@ -92,7 +100,8 @@ def remove_cart_item(request, item_id):
         'cart_count': cart.items.count()
     })
 
-
+from django.utils import timezone
+from datetime import timedelta
 
 @login_required
 def checkout(request):
@@ -100,6 +109,17 @@ def checkout(request):
         cart = request.user.cart
         if not cart.items.exists():
             messages.error(request, 'Keranjang Anda kosong')
+            return redirect('orders:cart')
+
+
+        # Cek existing pending order
+        existing_order = Order.objects.filter(
+            user=request.user,
+            status='pending'
+        ).exists()
+
+        if existing_order:
+            messages.error(request, 'Anda memiliki pesanan pending')
             return redirect('orders:cart')
 
         if request.method == 'POST':
@@ -121,7 +141,8 @@ def checkout(request):
                     merchant=cart.items.first().menu_item.merchant,
                     total_amount=total_amount,
                     status='pending',
-                    note=f"Nama: {name}\nTelepon: {phone}\nCatatan: {notes}"
+                    note=f"Nama: {name}\nTelepon: {phone}\nCatatan: {notes}",
+                    expired_at=timezone.now() + timedelta(minutes=10)  # 10 menit
                 )
 
                 # Create order items
@@ -163,6 +184,52 @@ def checkout(request):
         messages.error(request, 'Terjadi kesalahan sistem. Silakan coba lagi nanti.')
         return redirect('orders:cart')
 
+
+login_required
+@require_POST
+def cancel_order(request, order_id):
+    try:
+        order = Order.objects.get(
+            id=order_id, 
+            user=request.user,
+            status='pending'  # Hanya order pending yang bisa dibatalkan
+        )
+        
+        # Cek apakah order masih dalam waktu valid
+        if order.expired_at and timezone.now() > order.expired_at:
+            order.cancel()
+            return JsonResponse({
+                'success': True,
+                'message': 'Order telah expired dan dibatalkan'
+            })
+            
+        # Cek apakah ini auto-cancel dari timer
+        is_auto_cancel = json.loads(request.body).get('is_auto_cancel', False)
+        
+        if is_auto_cancel and timezone.now() <= order.expired_at:
+            return JsonResponse({
+                'success': False,
+                'error': 'Order masih valid, tidak bisa auto-cancel'
+            })
+            
+        # Proses pembatalan
+        order.cancel()
+        return JsonResponse({
+            'success': True,
+            'message': 'Order berhasil dibatalkan'
+        })
+        
+    except Order.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'error': 'Order tidak ditemukan'
+        }, status=404)
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+
 @login_required
 def payment(request, order_id):
     try:
@@ -194,6 +261,9 @@ def payment_success(request):
         # Update merchant total_orders
         merchant = latest_order.merchant
         merchant.total_orders += 1
+        # print(merchant)
+        # print(merchant.total_orders)
+        merchant.save()
         latest_order.save()
         
         return render(request, 'orders/payment_success.html', {

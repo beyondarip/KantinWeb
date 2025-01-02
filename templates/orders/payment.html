@@ -1,77 +1,233 @@
 {% extends 'base.html' %}
-
-{% block title %}Pembayaran - KantinKu{% endblock %}
+{% block title %}Pembayaran Order #{{ order.id }} - KantinKu{% endblock %}
 
 {% block content %}
+{% csrf_token %}
 <div class="min-h-screen bg-neutral py-12">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Order Summary Card -->
-        <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
-            <div class="p-6 border-b border-gray-200">
-                <div class="flex items-center justify-between">
-                    <h2 class="text-xl font-heading font-semibold text-primary">Order #{{ order.id }}</h2>
+        <!-- Card utama -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <!-- Header dengan timer -->
+            <div class="border-b border-gray-200">
+                <!-- Timer section -->
+                <div class="bg-accent/10 p-4 flex items-center justify-between">
+                    <div class="flex items-center text-accent">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span class="font-medium">Sisa waktu pembayaran:</span>
+                    </div>
+                    <div id="countdown" class="text-accent font-bold" data-expired-at="{{ order.expired_at|date:'c' }}">
+                        --:--
+                    </div>
+                </div>
+                <!-- Order info -->
+                <div class="p-6 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-heading font-semibold text-primary">Order #{{ order.id }}</h2>
+                        <p class="text-sm text-gray-500 mt-1">{{ order.created_at|date:"d F Y, H:i" }}</p>
+                    </div>
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary/10 text-secondary">
                         {{ order.get_status_display }}
                     </span>
                 </div>
             </div>
 
-            <div class="p-6">
-                <!-- Order Items -->
-                <div class="space-y-4 mb-6">
+            <!-- Order details -->
+            <div class="p-6 space-y-6">
+                <!-- Merchant info -->
+                <div class="flex items-center space-x-3">
+                    <div class="flex-1">
+                        <h3 class="font-medium text-primary">{{ order.merchant.name }}</h3>
+                        <p class="text-sm text-gray-500">{{ order.user.username }}</p>
+                    </div>
+                </div>
+
+                <!-- Item list -->
+                <div class="space-y-4">
                     {% for item in order.orderitem_set.all %}
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <span class="text-sm font-medium text-gray-900">{{ item.menu_item.name }}</span>
-                            <span class="text-sm text-gray-500 ml-2">x{{ item.quantity }}</span>
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-primary">{{ item.menu_item.name }}</p>
+                            <p class="text-sm text-gray-500">{{ item.quantity }}x @ Rp {{ item.price|floatformat:0 }}</p>
                         </div>
-                        <span class="text-sm font-medium text-gray-900">Rp {{ item.subtotal|floatformat:0 }}</span>
+                        <span class="text-sm font-medium text-primary">Rp {{ item.subtotal|floatformat:0 }}</span>
                     </div>
                     {% endfor %}
                 </div>
 
-                <!-- Total -->
-                <div class="border-t border-gray-200 pt-4">
-                    <div class="flex justify-between">
-                        <span class="text-base font-medium text-gray-900">Total Pembayaran</span>
-                        <span class="text-base font-semibold text-primary">Rp {{ order.total_amount|floatformat:0 }}</span>
+                <!-- Totals -->
+                <div class="border-t border-gray-200 pt-4 space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">Subtotal</span>
+                        <span class="text-primary">Rp {{ order.total_amount|add:"-2000"|floatformat:0 }}</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">Biaya Layanan</span>
+                        <span class="text-primary">Rp 2.000</span>
+                    </div>
+                    <div class="border-t border-gray-200 pt-2 mt-2">
+                        <div class="flex justify-between font-medium">
+                            <span class="text-primary">Total Pembayaran</span>
+                            <span class="text-lg text-primary">Rp {{ order.total_amount|floatformat:0 }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Payment Button -->
-        <div class="text-center">
-            <button id="pay-button" 
-                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
-                </svg>
-                Bayar Sekarang
-            </button>
+            <!-- Action buttons -->
+            <div class="p-6 bg-gray-50 flex justify-between items-center">
+                <button id="cancelButton"
+                        class="inline-flex items-center px-4 py-2 border border-danger text-danger hover:bg-danger/10 rounded-lg text-sm font-medium transition-colors">
+                    Batalkan Pesanan
+                </button>
+                <button id="payButton"
+                        class="inline-flex items-center px-6 py-2 rounded-lg text-sm font-medium text-white bg-secondary hover:bg-secondary/90 transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    Bayar Sekarang
+                </button>
+            </div>
         </div>
     </div>
 </div>
+{% endblock %}
 
 {% block extra_js %}
-<script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ midtrans_client_key }}"></script>
-<script type="text/javascript">
-    document.getElementById('pay-button').onclick = function() {
-        window.snap.pay('{{ order.midtrans_id  }}', {
-            onSuccess: function(result) {
-        window.location.href = "{% url 'orders:payment_success' %}";
-    },
-            onPending: function(result) {
-                alert("Pembayaran pending!");
-            },
-            onError: function(result) {
-                alert("Pembayaran gagal!");
-            },
-            onClose: function() {
-                alert('Anda menutup popup tanpa menyelesaikan pembayaran');
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ midtrans_client_key }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const orderId = {{ order.id }};
+    const countdownEl = document.getElementById('countdown');
+    const payButton = document.getElementById('payButton');
+    const cancelButton = document.getElementById('cancelButton');
+    let isExpired = false;
+
+    // Setup timer
+    function setupTimer() {
+        const expiredAt = new Date(countdownEl.dataset.expiredAt);
+        
+        function updateTimer() {
+            const now = new Date();
+            const diff = expiredAt - now;
+
+            // Jika sudah expired
+            if (diff <= 0 && !isExpired) {
+                isExpired = true;
+                countdownEl.textContent = '00:00';
+                disableButtons();
+                handleExpired();
+                return;
             }
-        });
-    };
+
+            // Update countdown
+            if (!isExpired) {
+                const minutes = Math.floor(diff / 60000);
+                const seconds = Math.floor((diff % 60000) / 1000);
+                countdownEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                requestAnimationFrame(updateTimer);
+            }
+        }
+
+        updateTimer();
+    }
+
+    // Handle expired state
+    function handleExpired() {
+        cancelOrder(true)
+            .then(success => {
+                if (success) {
+                    showNotification('Waktu pembayaran telah habis', 'warning');
+                    setTimeout(() => window.location.href = "{% url 'orders:order_history' %}", 2000);
+                }
+            });
+    }
+
+    // Disable buttons
+    function disableButtons() {
+        payButton.disabled = true;
+        cancelButton.disabled = true;
+        payButton.classList.add('opacity-50', 'cursor-not-allowed');
+        cancelButton.classList.add('opacity-50', 'cursor-not-allowed');
+    }
+
+    // Show notification
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg text-white
+            ${type === 'warning' ? 'bg-accent' : type === 'error' ? 'bg-danger' : 'bg-secondary'}
+            transform transition-all duration-300 translate-y-full`;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        setTimeout(() => notification.classList.remove('translate-y-full'), 100);
+        setTimeout(() => {
+            notification.classList.add('translate-y-full');
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+
+    // Cancel order function
+    async function cancelOrder(isAutoCancel = false) {
+        if (!isAutoCancel && !confirm('Apakah Anda yakin ingin membatalkan pesanan?')) {
+            return false;
+        }
+
+        try {
+            const response = await fetch(`/orders/cancel/${orderId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ is_auto_cancel: isAutoCancel })
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                if (!isAutoCancel) {
+                    showNotification('Pesanan berhasil dibatalkan');
+                    setTimeout(() => window.location.href = "{% url 'orders:order_history' %}", 2000);
+                }
+                return true;
+            } else {
+                if (!isAutoCancel) {
+                    showNotification(data.error || 'Gagal membatalkan pesanan', 'error');
+                }
+                return false;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            if (!isAutoCancel) {
+                showNotification('Terjadi kesalahan sistem', 'error');
+            }
+            return false;
+        }
+    }
+
+    // Setup Midtrans
+    function setupMidtrans() {
+        payButton.onclick = () => {
+            window.snap.pay('{{ order.midtrans_id }}', {
+                onSuccess: () => {
+                    showNotification('Pembayaran berhasil');
+                    setTimeout(() => window.location.href = "{% url 'orders:payment_success' %}", 2000);
+                },
+                onPending: () => showNotification('Pembayaran pending', 'warning'),
+                onError: () => showNotification('Pembayaran gagal', 'error'),
+                onClose: () => showNotification('Popup pembayaran ditutup', 'warning')
+            });
+        };
+    }
+
+    // Event listeners
+    cancelButton.addEventListener('click', () => cancelOrder());
+
+    // Initialize
+    setupTimer();
+    setupMidtrans();
+});
 </script>
-{% endblock %}
 {% endblock %}
