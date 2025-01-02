@@ -25,55 +25,64 @@
         </div>
 
         <!-- Search & Filter Section -->
-        <div class="mt-8 bg-neutral rounded-xl p-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Search -->
-                <div class="col-span-1 md:col-span-2">
-                    <form method="get" class="flex flex-col sm:flex-row gap-4">
-                        <input type="text" 
-                               name="search" 
-                               value="{{ request.GET.search }}"
-                               placeholder="Cari merchant..." 
-                               class="rounded-lg">
-                    
-                        <select name="category" class="rounded-lg">
-                            <option value="">Semua Kategori</option>
-                            {% for category in categories %}
-                            <option value="{{ category.id }}" 
-                                    {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
-                                {{ category.name }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                    
-                        <select name="sort" class="rounded-lg">
-                            <option value="">Urutkan</option>
-                            <option value="rating" {% if request.GET.sort == 'rating' %}selected{% endif %}>Rating</option>
-                            <option value="popular" {% if request.GET.sort == 'popular' %}selected{% endif %}>Terpopuler</option>
-                            <option value="newest" {% if request.GET.sort == 'newest' %}selected{% endif %}>Terbaru</option>
-                        </select>
-                    
-                        <button type="submit" class="bg-secondary text-white rounded-lg px-4 py-2">
-                            Filter
-                        </button>
-                    </form>
-                </div>
+       <!-- Search & Filter Section -->
+<div class="mt-8 bg-neutral rounded-xl p-6">
+    <form method="get" action="{% url 'merchants:merchant_list' %}" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Search -->
+            <div class="col-span-1 md:col-span-2">
+                <input type="text" 
+                       name="search" 
+                       value="{{ search_query }}"
+                       placeholder="Cari merchant..." 
+                       class="w-full rounded-lg border-gray-300 focus:border-secondary focus:ring-secondary">
+            </div>
 
-                <!-- Category Filter -->
-                <!-- <div>
-                    <select name="category" 
-                            onchange="this.form.submit()" 
-                            class="w-full rounded-lg border-gray-300 text-gray-700 focus:ring-secondary focus:border-secondary">
-                        <option value="">Semua Kategori</option>
-                        {% for category in categories %}
-                        <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
-                            {{ category.name }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div> -->
+            <!-- Category Filter -->
+            <div>
+                <select name="category" 
+                        class="w-full rounded-lg border-gray-300 focus:border-secondary focus:ring-secondary">
+                    <option value="">Semua Kategori</option>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}" 
+                            {% if active_category == category.id|stringformat:"s" %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Sort Options -->
+            <div class="col-span-1 md:col-span-2">
+                <select name="sort" 
+                        class="w-full rounded-lg border-gray-300 focus:border-secondary focus:ring-secondary">
+                    <option value="">Urutan Default</option>
+                    <option value="rating" {% if active_sort == 'rating' %}selected{% endif %}>
+                        Rating Tertinggi
+                    </option>
+                    <option value="popular" {% if active_sort == 'popular' %}selected{% endif %}>
+                        Terpopuler
+                    </option>
+                    <option value="newest" {% if active_sort == 'newest' %}selected{% endif %}>
+                        Terbaru
+                    </option>
+                </select>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex space-x-4">
+                <button type="submit" 
+                        class="flex-1 bg-secondary text-white rounded-lg px-4 py-2 hover:bg-secondary/90 transition-colors">
+                    Filter
+                </button>
+                <a href="{% url 'merchants:merchant_list' %}" 
+                   class="flex-1 bg-gray-200 text-gray-700 rounded-lg px-4 py-2 text-center hover:bg-gray-300 transition-colors">
+                    Reset
+                </a>
             </div>
         </div>
+    </form>
+</div>
     </div>
 </section>
 

@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}KantinKu - Pesan Makanan Online{% endblock %}
+{% block title %}KantinKu - Pesan Makanan Kampus Online{% endblock %}
 
 {% block content %}
 <!-- Hero Section dengan parallax effect -->
 <section class="relative h-[600px] flex items-center overflow-hidden">
     <!-- Background Image with Overlay -->
     <div class="absolute inset-0">
-        <!-- <img src="https://placehold.co/1920x1080?text=Modern+Food+Background" alt="Hero Background" class="w-full h-full object-cover object-center"> -->
         <img src="{% static 'images/hero.jpg' %}" alt="Hero Background" class="w-full h-full object-cover object-center">
         <div class="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70"></div>
     </div>
@@ -16,10 +15,10 @@
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div class="lg:w-2/3">
             <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-                Pesan Makanan Favoritmu dengan Mudah
+                Pesan Makanan Kampus Tanpa Antri
             </h1>
             <p class="text-lg md:text-xl text-gray-200 mb-8">
-                Nikmati berbagai pilihan menu dari kantin terbaik. Pesan sekarang, dan dapatkan pengalaman kuliner yang tak terlupakan.
+                Sedang kuliah atau mengajar? Pesan sekarang, ambil nanti. Tidak perlu antri dan khawatir kehabisan menu favorit Anda.
             </p>
             <div class="flex flex-col sm:flex-row gap-4">
                 <a href="{% url 'merchants:merchant_list' %}" 
@@ -27,7 +26,7 @@
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                     </svg>
-                    Jelajahi Menu
+                    Pesan Sekarang
                 </a>
                 <a href="#how-it-works" 
                    class="inline-flex items-center justify-center px-6 py-3 border-2 border-white text-base font-medium rounded-lg text-white hover:bg-white hover:text-primary transition duration-150 ease-in-out">
@@ -36,12 +35,116 @@
             </div>
         </div>
     </div>
+</section>
 
-    <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-        </svg>
+<!-- Quick Order Options Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="font-heading text-3xl font-bold text-primary">Fitur Unggulan</h2>
+            <p class="mt-4 text-gray-600">Solusi praktis untuk kebutuhan makan di kampus</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Pre-order Option -->
+            <div class="bg-neutral rounded-xl p-8 shadow-sm hover:shadow-md transition duration-300">
+                <div class="w-16 h-16 mx-auto mb-6 bg-secondary/10 rounded-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-primary text-center mb-4">Pre-order Pintar</h3>
+                <p class="text-gray-600 text-center">Pesan sebelum jam istirahat, hindari antrian panjang dan kehabisan menu favorit</p>
+            </div>
+
+            <!-- Room Delivery -->
+            <div class="bg-neutral rounded-xl p-8 shadow-sm hover:shadow-md transition duration-300">
+                <div class="w-16 h-16 mx-auto mb-6 bg-secondary/10 rounded-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-primary text-center mb-4">Antar ke Ruangan</h3>
+                <p class="text-gray-600 text-center">Sedang mengajar atau praktikum? Kami antar pesanan langsung ke ruangan Anda</p>
+            </div>
+
+            <!-- Schedule Order -->
+            <div class="bg-neutral rounded-xl p-8 shadow-sm hover:shadow-md transition duration-300">
+                <div class="w-16 h-16 mx-auto mb-6 bg-secondary/10 rounded-full flex items-center justify-center">
+                    <svg class="w-8 h-8 text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-primary text-center mb-4">Pesanan Terjadwal</h3>
+                <p class="text-gray-600 text-center">Atur waktu pengambilan sesuai jadwal kuliah. Makanan siap tepat saat Anda butuhkan</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="py-20 bg-neutral">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="font-heading text-3xl font-bold text-primary">Cara Pemesanan</h2>
+            <p class="mt-4 text-gray-600">Mudah dan praktis dalam 4 langkah sederhana</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Step 1 -->
+            <div class="relative">
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6 shadow-lg">
+                        <span class="text-2xl font-bold text-white">1</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-primary mb-4">Pilih Kantin</h3>
+                    <p class="text-center text-gray-600">Pilih dari berbagai kantin favorit di kampus</p>
+                </div>
+                <div class="hidden lg:block absolute top-20 left-full w-full h-0.5 bg-secondary/20 -translate-y-1/2">
+                    <div class="absolute right-0 -top-1.5 h-3 w-3 bg-secondary rounded-full"></div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="relative">
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6 shadow-lg">
+                        <span class="text-2xl font-bold text-white">2</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-primary mb-4">Pilih Menu</h3>
+                    <p class="text-center text-gray-600">Tentukan menu dan atur waktu pengambilan/pengantaran</p>
+                </div>
+                <div class="hidden lg:block absolute top-20 left-full w-full h-0.5 bg-secondary/20 -translate-y-1/2">
+                    <div class="absolute right-0 -top-1.5 h-3 w-3 bg-secondary rounded-full"></div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="relative">
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6 shadow-lg">
+                        <span class="text-2xl font-bold text-white">3</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-primary mb-4">Bayar Online</h3>
+                    <p class="text-center text-gray-600">Pembayaran mudah dengan berbagai metode digital</p>
+                </div>
+                <div class="hidden lg:block absolute top-20 left-full w-full h-0.5 bg-secondary/20 -translate-y-1/2">
+                    <div class="absolute right-0 -top-1.5 h-3 w-3 bg-secondary rounded-full"></div>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="relative">
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6 shadow-lg">
+                        <span class="text-2xl font-bold text-white">4</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-primary mb-4">Terima Pesanan</h3>
+                    <p class="text-center text-gray-600">Ambil di kantin atau terima di ruangan sesuai pilihan Anda</p>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -49,16 +152,16 @@
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-            <h2 class="font-heading text-3xl font-bold text-primary">Merchant Populer</h2>
-            <p class="mt-4 text-gray-600">Temukan merchant terbaik pilihan kami</p>
+            <h2 class="font-heading text-3xl font-bold text-primary">Kantin Populer</h2>
+            <p class="mt-4 text-gray-600">Kantin favorit di kampus dengan rating terbaik</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {% for merchant in featured_merchants %}
             <div class="group relative bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300 ease-in-out overflow-hidden">
-                <!-- Merchant Image -->
-                <div class="aspect-w-16 aspect-h-9 overflow-hidden">
-                    <img src="{% if merchant.image %}{{ merchant.image.url }}{% else %}https://placehold.co/800x450?text=Restaurant+{{ forloop.counter }}{% endif %}" 
+                <!-- Merchant Image with proper aspect ratio -->
+                <div class="relative aspect-w-16 aspect-h-9 overflow-hidden">
+                    <img src="{% if merchant.image %}{{ merchant.image.url }}{% else %}https://placehold.co/800x450?text=Kantin+{{ forloop.counter }}{% endif %}" 
                          alt="{{ merchant.name }}" 
                          class="w-full h-full object-cover object-center transform group-hover:scale-105 transition duration-500">
                 </div>
@@ -94,7 +197,7 @@
             </div>
             {% empty %}
             <div class="col-span-full text-center py-12">
-                <p class="text-gray-500">Tidak ada merchant yang tersedia saat ini.</p>
+                <p class="text-gray-500">Tidak ada kantin yang tersedia saat ini.</p>
             </div>
             {% endfor %}
         </div>
@@ -102,7 +205,7 @@
         <div class="text-center mt-12">
             <a href="{% url 'merchants:merchant_list' %}" 
                class="inline-flex items-center px-6 py-3 border border-secondary text-base font-medium rounded-lg text-secondary hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                Lihat Semua Merchant
+                Lihat Semua Kantin
                 <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
@@ -113,120 +216,207 @@
 
 <!-- Categories Section -->
 <section class="py-20 bg-neutral">
-    <!-- Akan dilanjutkan di bagian berikutnya -->
-
-<!-- Categories Section -->
-<section class="py-20 bg-neutral">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
             <h2 class="font-heading text-3xl font-bold text-primary">Kategori Menu</h2>
-            <p class="mt-4 text-gray-600">Pilih kategori favoritmu</p>
+            <p class="mt-4 text-gray-600">Temukan menu sesuai selera Anda</p>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {% for category in categories %}
             <a href="{% url 'merchants:merchant_list' %}?category={{ category.id }}" 
                class="group relative bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition duration-300">
-                <!-- Icon Container -->
+                <!-- Category Icon -->
                 <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition duration-300">
-                    <!-- Dynamic icon based on category name -->
+                    <!-- Dynamic icons based on category -->
+                    {% if category.name == 'Nasi' %}
                     <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
                     </svg>
+                    {% elif category.name == 'Minuman' %}
+                    <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                    </svg>
+                    {% else %}
+                    <svg class="w-8 h-8 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    {% endif %}
                 </div>
                 
                 <h3 class="text-lg font-medium text-primary text-center mb-2">{{ category.name }}</h3>
-                <p class="text-sm text-gray-500 text-center">{{ category.merchant_set.count }} Merchant</p>
+                <p class="text-sm text-gray-500 text-center">{{ category.merchant_set.count }} Menu</p>
             </a>
             {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- How It Works Section -->
-<section id="how-it-works" class="py-20 bg-white">
+<!-- Campus Location Section -->
+<section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="font-heading text-3xl font-bold text-primary">Cara Memesan</h2>
-            <p class="mt-4 text-gray-600">Mudah dan cepat dalam 4 langkah sederhana</p>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="font-heading text-3xl font-bold text-primary mb-6">Tersedia di Seluruh Area Kampus</h2>
+                <p class="text-gray-600 mb-8">Nikmati kemudahan pemesanan makanan dari berbagai lokasi di kampus:</p>
+                
+                <div class="space-y-6">
+                    <!-- Fakultas Area -->
+                    <div class="flex items-start space-x-4">
+                        <div class="w-8 h-8 bg-secondary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-primary">Area Fakultas</h3>
+                            <p class="text-sm text-gray-600">Gedung A, B, C - Food Court Utama</p>
+                            <p class="text-sm text-gray-600">Mini Market & Coffee Shop</p>
+                        </div>
+                    </div>
+
+                    <!-- Student Center -->
+                    <div class="flex items-start space-x-4">
+                        <div class="w-8 h-8 bg-secondary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-primary">Student Center</h3>
+                            <p class="text-sm text-gray-600">Food Court Mahasiswa</p>
+                            <p class="text-sm text-gray-600">Kantin Sehat & Kafe</p>
+                        </div>
+                    </div>
+
+                    <!-- Area Laboratorium -->
+                    <div class="flex items-start space-x-4">
+                        <div class="w-8 h-8 bg-secondary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-primary">Area Laboratorium</h3>
+                            <p class="text-sm text-gray-600">Lab Terpadu - Mini Café</p>
+                            <p class="text-sm text-gray-600">Vending Machine 24 Jam</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map placeholder -->
+            <div class="relative aspect-w-16 aspect-h-9 bg-neutral rounded-xl overflow-hidden shadow-lg">
+                <img src="https://placehold.co/800x450?text=Peta+Lokasi+Kantin" 
+                     alt="Peta Lokasi Kantin"
+                     class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<!-- Team Section -->
+<section class="py-24 bg-neutral overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h2 class="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">Meet Our Team</h2>
+            <p class="text-gray-600">Tim pengembang aplikasi KantinKu yang berkomitmen untuk memberikan pengalaman terbaik bagi pengguna</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Step 1 -->
-            <div class="relative">
-                <div class="flex flex-col items-center">
-                    <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6 shadow-lg">
-                        <span class="text-2xl font-bold text-white">1</span>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+            <!-- Team Member 1 -->
+            <div class="group">
+                <div class="relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:shadow-xl">
+                    <div class="aspect-w-4 aspect-h-5 relative">
+                        <img src="https://placehold.co/400x500" alt="Team Member 1"
+                             class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500?text=Image+Not+Available';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/0 to-black/0"></div>
                     </div>
-                    <h3 class="text-xl font-semibold text-primary mb-4">Pilih Merchant</h3>
-                    <p class="text-center text-gray-600">Temukan merchant favorit dari berbagai pilihan yang tersedia</p>
-                </div>
-                <!-- Connector -->
-                <div class="hidden lg:block absolute top-20 left-full w-full h-0.5 bg-secondary/20 -translate-y-1/2">
-                    <div class="absolute right-0 -top-1.5 h-3 w-3 bg-secondary rounded-full"></div>
+                    <div class="absolute bottom-0 w-full p-6 text-white transition-all duration-300 translate-y-6 group-hover:translate-y-0">
+                        <div class="transform transition-transform duration-300">
+                            <h3 class="text-2xl font-bold mb-1">Nama Lengkap</h3>
+                            <p class="text-gray-200 text-sm mb-2">NIM: 123456789</p>
+                            <p class="text-gray-300 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Teknik Informatika</p>
+                            <div class="flex space-x-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <!-- Social media links -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Step 2 -->
-            <div class="relative">
-                <div class="flex flex-col items-center">
-                    <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6 shadow-lg">
-                        <span class="text-2xl font-bold text-white">2</span>
+            <!-- Team Member 2 -->
+            <div class="group">
+                <div class="relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:shadow-xl">
+                    <div class="aspect-w-4 aspect-h-5 relative">
+                        <img src="{% static 'images/team-2.jpg' %}" alt="Team Member 2" 
+                             class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500?text=Image+Not+Available';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/0 to-black/0"></div>
                     </div>
-                    <h3 class="text-xl font-semibold text-primary mb-4">Pilih Menu</h3>
-                    <p class="text-center text-gray-600">Tambahkan menu yang kamu inginkan ke keranjang</p>
-                </div>
-                <!-- Connector -->
-                <div class="hidden lg:block absolute top-20 left-full w-full h-0.5 bg-secondary/20 -translate-y-1/2">
-                    <div class="absolute right-0 -top-1.5 h-3 w-3 bg-secondary rounded-full"></div>
+                    <div class="absolute bottom-0 w-full p-6 text-white transition-all duration-300 translate-y-6 group-hover:translate-y-0">
+                        <div class="transform transition-transform duration-300">
+                            <h3 class="text-2xl font-bold mb-1">Nama Lengkap</h3>
+                            <p class="text-gray-200 text-sm mb-2">NIM: 123456789</p>
+                            <p class="text-gray-300 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Teknik Informatika</p>
+                            <div class="flex space-x-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <!-- Social media links -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Step 3 -->
-            <div class="relative">
-                <div class="flex flex-col items-center">
-                    <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6 shadow-lg">
-                        <span class="text-2xl font-bold text-white">3</span>
+            <!-- Team Member 3 -->
+            <div class="group">
+                <div class="relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:shadow-xl">
+                    <div class="aspect-w-4 aspect-h-5 relative">
+                        <img src="{% static 'images/team-1.png' %}" alt="Team Member 3" 
+                             class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500?text=Image+Not+Available';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/0 to-black/0"></div>
                     </div>
-                    <h3 class="text-xl font-semibold text-primary mb-4">Checkout & Bayar</h3>
-                    <p class="text-center text-gray-600">Pilih metode pembayaran dan selesaikan transaksi</p>
-                </div>
-                <!-- Connector -->
-                <div class="hidden lg:block absolute top-20 left-full w-full h-0.5 bg-secondary/20 -translate-y-1/2">
-                    <div class="absolute right-0 -top-1.5 h-3 w-3 bg-secondary rounded-full"></div>
-                </div>
-            </div>
-
-            <!-- Step 4 -->
-            <div class="relative">
-                <div class="flex flex-col items-center">
-                    <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mb-6 shadow-lg">
-                        <span class="text-2xl font-bold text-white">4</span>
+                    <div class="absolute bottom-0 w-full p-6 text-white transition-all duration-300 translate-y-6 group-hover:translate-y-0">
+                        <div class="transform transition-transform duration-300">
+                            <h3 class="text-2xl font-bold mb-1">Nama Lengkap</h3>
+                            <p class="text-gray-200 text-sm mb-2">NIM: 123456789</p>
+                            <p class="text-gray-300 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Teknik Informatika</p>
+                            <div class="flex space-x-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <!-- Social media links -->
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-primary mb-4">Tunggu & Nikmati</h3>
-                    <p class="text-center text-gray-600">Pantau status pesanan dan nikmati makananmu</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
+
 <!-- Call to Action -->
-<section class="bg-primary py-16">
+<section class="bg-primary py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
             <h2 class="text-3xl font-bold text-white mb-6">Mulai Pesan Sekarang</h2>
-            <p class="text-lg text-gray-200 mb-8">Nikmati kemudahan memesan makanan favorit Anda</p>
-            <a href="{% url 'merchants:merchant_list' %}" 
-               class="inline-flex items-center px-8 py-3 border-2 border-white text-base font-medium rounded-lg text-white hover:bg-white hover:text-primary transition duration-150 ease-in-out">
-                Jelajahi Menu
-                <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                </svg>
-            </a>
+            <p class="text-lg text-gray-200 mb-8">Nikmati kemudahan memesan makanan di kampus tanpa harus mengantri</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="{% url 'merchants:merchant_list' %}" 
+                   class="inline-flex items-center px-8 py-3 border-2 border-white text-base font-medium rounded-lg text-white hover:bg-white hover:text-primary transition duration-150 ease-in-out">
+                    Jelajahi Menu
+                    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                </a>
+                <a href="{% url 'accounts:register' %}" 
+                   class="inline-flex items-center px-8 py-3 bg-white text-primary text-base font-medium rounded-lg hover:bg-gray-100 transition duration-150 ease-in-out">
+                    Daftar Sekarang
+                </a>
+            </div>
         </div>
     </div>
 </section>
-</div>
+
 {% endblock %}

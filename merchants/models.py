@@ -4,6 +4,16 @@ from django.db import models
 from django.db import models
 from accounts.models import User
 
+
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+    
+    class Meta:
+        verbose_name_plural = 'Categories'
+    
+    def __str__(self):
+        return self.name
+
 class Merchant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
@@ -15,19 +25,12 @@ class Merchant(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     rating = models.DecimalField(max_digits=3, decimal_places=2, default=0)
     total_orders = models.IntegerField(default=0)
+    categories = models.ManyToManyField(Category, related_name='merchants', blank=True)
+    
 
     class Meta:
         ordering = ['-created_at']
 
-    def __str__(self):
-        return self.name
-
-class Category(models.Model):
-    name = models.CharField(max_length=50)
-    
-    class Meta:
-        verbose_name_plural = 'Categories'
-    
     def __str__(self):
         return self.name
 

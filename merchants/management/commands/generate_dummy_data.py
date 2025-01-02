@@ -1,140 +1,233 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
+from merchants.models import Category, Merchant, MenuItem
 from django.core.files.base import ContentFile
-from merchants.models import Merchant, Category, MenuItem
-from faker import Faker
-import random
 import requests
-import time
+from decimal import Decimal
+import random
+from django.utils.text import slugify
+from django.utils.crypto import get_random_string
 
 User = get_user_model()
-fake = Faker('id_ID')
 
 class Command(BaseCommand):
-    help = 'Generates dummy data for testing'
+    help = 'Generate dummy data for testing'
 
-    def get_random_image_url(self, type):
-        # Menggunakan placeholder.com
-        if type == 'merchant':
-            return f"https://placehold.co/600x400/png?text=Restaurant+{random.randint(1,1000)}"
-        else:  # menu item
-            return f"https://placehold.co/400x300/png?text=Food+{random.randint(1,1000)}"
-
-    def download_image(self, url, retries=3):
-        """Download image with retry mechanism"""
-        for attempt in range(retries):
-            try:
-                response = requests.get(url, timeout=10)
-                if response.status_code == 200:
-                    return response.content
-                time.sleep(1)  # Wait before retry
-            except Exception as e:
-                if attempt == retries - 1:  # Last attempt
-                    self.stdout.write(self.style.WARNING(f'Failed to download image after {retries} attempts: {str(e)}'))
-                time.sleep(1)  # Wait before retry
-        return None
-
-    def handle(self, *args, **kwargs):
-        self.stdout.write('Generating dummy data...')
-
-        # Create categories (kode kategori sama seperti sebelumnya)
-        categories = [
-            'Makanan Berat',
-            'Makanan Ringan',
-            'Minuman',
-            'Dessert',
-            'Snack',
-            'Nasi',
-            'Mie',
-            'Sayuran',
-            'Seafood',
-            'Daging'
-        ]
-        
-        # Buat categories dan simpan dalam list
-        category_objects = []
-        for cat_name in categories:
-            category, created = Category.objects.get_or_create(name=cat_name)
-            category_objects.append(category)
-            if created:
-                self.stdout.write(f'Created category: {cat_name}')
-
-        # Create merchants
-        for i in range(20):
-            self.stdout.write(f'Creating merchant {i+1}/20...')
-            
-            # Create user
-            username = fake.user_name()
-            while User.objects.filter(username=username).exists():
-                username = fake.user_name()
-                
+    def create_user(self, email, password, is_merchant=False):
+        username = email.split('@')[0]  # Menggunakan bagian sebelum @ sebagai username
+        try:
+            user = User.objects.get(username=username)
+            self.stdout.write(self.style.WARNING(f'User {username} already exists'))
+            return user
+        except User.DoesNotExist:
             user = User.objects.create_user(
                 username=username,
-                email=fake.email(),
+                email=email,
+                password=password,
+                is_merchant=is_merchant,
+                # Tambahkan data dummy untuk field lainnya
+                phone_number=f'+62812{str(random.randint(10000000, 99999999))}',
+                address='Jl. Contoh No. ' + str(random.randint(1, 100))
+            )
+            self.stdout.write(self.style.SUCCESS(f'Created user {username}'))
+            return user
+
+    def create_categories(self):
+        categories = [
+            "Makanan Utama",
+            "Minuman",
+            "Snack",
+            "Dessert",
+            "Paket Hemat",
+            "Menu Sehat",
+            "Makanan Ringan",
+            "Menu Spesial"
+        ]
+        
+        created_categories = []
+        for cat_name in categories:
+            category, created = Category.objects.get_or_create(name=cat_name)
+            created_categories.append(category)
+            status = 'Created' if created else 'Existing'
+            self.stdout.write(self.style.SUCCESS(f'{status} category: {cat_name}'))
+        
+        return created_categories
+
+    def create_merchants(self, categories):
+        merchant_data = [
+            {
+                'name': 'Warung Tegal Enak',
+                'description': 'Menyajikan masakan rumahan khas Tegal yang lezat dan terjangkau.',
+                'email': 'warteg.enak@example.com',
+            },
+            {
+                'name': 'Kedai Kopi Kampus',
+                'description': 'Tempat ngopi favorit mahasiswa dengan berbagai pilihan kopi dan snack.',
+                'email': 'kedaikopi@example.com',
+            },
+            {
+                'name': 'Nasi Goreng Spesial',
+                'description': 'Nasi goreng dengan berbagai variasi dan tingkat kepedasan.',
+                'email': 'nasgor@example.com',
+            },
+            {
+                'name': 'Bakso Malang Pak Jo',
+                'description': 'Bakso dengan kuah kaldu sapi asli dan berbagai topping.',
+                'email': 'baksopakjo@example.com',
+            },
+            {
+                'name': 'Ayam Geprek Pedas',
+                'description': 'Ayam geprek dengan sambal pilihan dan level kepedasan.',
+                'email': 'ayamgeprek@example.com',
+            }
+        ]
+
+        created_merchants = []
+        for data in merchant_data:
+            # Create merchant user with unique username
+            base_username = data['email'].split('@')[0]
+            unique_username = f"{base_username}_{get_random_string(4)}"
+            
+            user = self.create_user(
+                email=data['email'],
                 password='password123',
-                is_merchant=True,
-                phone_number=fake.phone_number(),
-                address=fake.address()
+                is_merchant=True
             )
 
             # Create merchant
-            merchant_name = f"{fake.company()} {random.choice(['Warung', 'Kantin', 'Resto', 'Café'])}"
-            merchant = Merchant.objects.create(
+            merchant, created = Merchant.objects.get_or_create(
                 user=user,
-                name=merchant_name,
-                description=fake.text(max_nb_chars=200),
-                is_active=True,
+                defaults={
+                    'name': data['name'],
+                    'description': data['description'],
+                    'rating': round(random.uniform(3.5, 5.0), 1),
+                    'total_orders': random.randint(50, 500),
+                    'is_active': True
+                }
             )
 
-            # Download merchant image
-            image_content = self.download_image(self.get_random_image_url('merchant'))
-            if image_content:
-                merchant.image.save(
-                    f'merchant_{merchant.id}.png',
-                    ContentFile(image_content),
-                    save=True
-                )
+            # Add random categories
+            selected_categories = random.sample(categories, random.randint(2, 4))
+            merchant.categories.add(*selected_categories)
+            
+            # Set placeholder image
+            merchant_image_url = f'https://placehold.co/600x400/png?text=Restaurant+{slugify(merchant.name)}'
+            try:
+                response = requests.get(merchant_image_url)
+                if response.status_code == 200:
+                    image_name = f'{slugify(merchant.name)}.jpg'
+                    merchant.image.save(image_name, ContentFile(response.content), save=True)
+            except Exception as e:
+                self.stdout.write(self.style.WARNING(f'Failed to set image for {merchant.name}: {e}'))
 
-            # Create menu items
-            num_items = random.randint(5, 15)
-            for j in range(num_items):
-                menu_item = MenuItem.objects.create(
-                    merchant=merchant,
-                    category=random.choice(category_objects),
-                    name=fake.catch_phrase()[:50],
-                    description=fake.text(max_nb_chars=100),
-                    price=random.randint(5000, 100000),
-                    is_available=random.choice([True, True, True, False])
-                )
+            created_merchants.append(merchant)
+            status = 'Created' if created else 'Existing'
+            self.stdout.write(self.style.SUCCESS(f'{status} merchant: {data["name"]}'))
 
-                # Download menu item image
-                image_content = self.download_image(self.get_random_image_url('menu'))
-                if image_content:
-                    menu_item.image.save(
-                        f'menu_item_{menu_item.id}.png',
-                        ContentFile(image_content),
-                        save=True
+        return created_merchants
+
+    def create_menu_items(self, merchants, categories):
+        menu_items_data = {
+            'Makanan Utama': [
+                ('Nasi Goreng Spesial', 'Nasi goreng dengan telur, ayam, dan sayuran', 15000),
+                ('Mie Goreng Komplit', 'Mie goreng dengan topping lengkap', 18000),
+                ('Ayam Penyet', 'Ayam penyet dengan sambal terasi', 20000),
+                ('Soto Ayam', 'Soto ayam dengan kuah bening segar', 17000),
+                ('Gado-gado', 'Sayuran segar dengan bumbu kacang', 15000),
+            ],
+            'Minuman': [
+                ('Es Teh Manis', 'Teh manis dingin segar', 5000),
+                ('Kopi Hitam', 'Kopi robusta pilihan', 8000),
+                ('Es Jeruk', 'Jeruk segar', 6000),
+                ('Es Campur', 'Campuran buah dan sirup', 12000),
+                ('Jus Alpukat', 'Jus alpukat segar dengan susu', 15000),
+            ],
+            'Snack': [
+                ('Kentang Goreng', 'Kentang goreng crispy', 10000),
+                ('Pisang Goreng', 'Pisang goreng crispy', 8000),
+                ('Roti Bakar', 'Roti bakar dengan berbagai topping', 12000),
+                ('Dimsum', 'Aneka dimsum ayam dan udang', 15000),
+                ('Cireng', 'Cireng isi dengan sambal kacang', 8000),
+            ],
+            'Dessert': [
+                ('Es Krim', 'Es krim dengan berbagai rasa', 10000),
+                ('Pancake', 'Pancake dengan maple syrup', 15000),
+                ('Pudding', 'Pudding susu dengan vla', 8000),
+            ],
+            'Paket Hemat': [
+                ('Paket Nasi Ayam', 'Nasi + Ayam + Es Teh', 25000),
+                ('Paket Mie Komplit', 'Mie Goreng + Telur + Es Teh', 22000),
+                ('Paket Mahasiswa', 'Nasi Goreng + Es Teh', 18000),
+            ],
+            'Menu Sehat': [
+                ('Salad Bowl', 'Mixed salad dengan dressing', 20000),
+                ('Juice Detox', 'Campuran juice sayur dan buah', 15000),
+                ('Oatmeal', 'Oatmeal dengan buah segar', 18000),
+            ],
+            'Makanan Ringan': [
+                ('Kripik Singkong', 'Kripik singkong berbagai rasa', 5000),
+                ('Kacang Mix', 'Campuran kacang premium', 10000),
+                ('Pop Corn', 'Pop corn caramel', 8000),
+            ],
+            'Menu Spesial': [
+                ('Sate Ayam Spesial', 'Sate ayam dengan bumbu special', 25000),
+                ('Ikan Bakar', 'Ikan bakar dengan sambal dabu-dabu', 30000),
+                ('Soup Iga', 'Soup iga sapi dengan rempah', 35000),
+            ]
+        }
+
+        for merchant in merchants:
+            # Get categories assigned to this merchant
+            merchant_categories = merchant.categories.all()
+            
+            for category in merchant_categories:
+                # Get menu items for this category if available
+                category_items = menu_items_data.get(category.name, [])
+                if not category_items:
+                    continue
+
+                for item_name, description, price in category_items:
+                    # Add some price variation between merchants
+                    adjusted_price = price * (1 + random.uniform(-0.1, 0.1))
+                    
+                    menu_item, created = MenuItem.objects.get_or_create(
+                        merchant=merchant,
+                        name=item_name,
+                        category=category,
+                        defaults={
+                            'description': description,
+                            'price': round(Decimal(adjusted_price), -2),  # Round to nearest 100
+                            'is_available': True
+                        }
                     )
 
-            self.stdout.write(self.style.SUCCESS(f'Created merchant: {merchant.name} with {num_items} menu items'))
+                    # Set placeholder image
+                    if created:
+                        item_image_url = f'https://placehold.co/400x300/png?text=Food+{slugify(item_name)}'
+                        try:
+                            response = requests.get(item_image_url)
+                            if response.status_code == 200:
+                                image_name = f'{slugify(item_name)}.jpg'
+                                menu_item.image.save(image_name, ContentFile(response.content), save=True)
+                        except Exception as e:
+                            self.stdout.write(self.style.WARNING(f'Failed to set image for {item_name}: {e}'))
 
-        # Create regular users
-        self.stdout.write('Creating regular users...')
-        for i in range(30):
-            username = fake.user_name()
-            while User.objects.filter(username=username).exists():
-                username = fake.user_name()
-                
-            User.objects.create_user(
-                username=username,
-                email=fake.email(),
-                password='password123',
-                is_merchant=False,
-                phone_number=fake.phone_number(),
-                address=fake.address()
-            )
+                    status = 'Created' if created else 'Existing'
+                    self.stdout.write(self.style.SUCCESS(f'{status} menu item: {item_name} for {merchant.name}'))
 
+    def handle(self, *args, **kwargs):
+        self.stdout.write('Starting to generate dummy data...')
+        
+        # Create regular user
+        self.create_user('user@example.com', 'password123')
+        
+        # Create categories
+        categories = self.create_categories()
+        
+        # Create merchants
+        merchants = self.create_merchants(categories)
+        
+        # Create menu items
+        self.create_menu_items(merchants, categories)
+        
         self.stdout.write(self.style.SUCCESS('Successfully generated dummy data'))
-        self.stdout.write('You can login to any merchant or user account with:')
-        self.stdout.write('Username: [generated username]')
-        self.stdout.write('Password: password123')

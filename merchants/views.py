@@ -22,7 +22,7 @@ class MerchantListView(ListView):
     paginate_by = 9
 
     def get_queryset(self):
-        queryset = Merchant.objects.filter(is_active=True)
+        queryset = Merchant.objects.filter(is_active=True).distinct()
         
         # Handle search
         search_query = self.request.GET.get('search', '')
@@ -34,7 +34,7 @@ class MerchantListView(ListView):
         
         # Handle category filter
         category = self.request.GET.get('category')
-        if category:
+        if category and category.isdigit():
             queryset = queryset.filter(categories__id=category)
         
         # Handle sorting
@@ -45,12 +45,20 @@ class MerchantListView(ListView):
             queryset = queryset.order_by('-total_orders')
         elif sort == 'newest':
             queryset = queryset.order_by('-created_at')
+        else:
+            queryset = queryset.order_by('-created_at')  # Default sorting
                 
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
+        
+        # Add active filters to context
+        context['active_category'] = self.request.GET.get('category', '')
+        context['active_sort'] = self.request.GET.get('sort', '')
+        context['search_query'] = self.request.GET.get('search', '')
+        
         return context
 
 class MerchantDetailView(DetailView):
