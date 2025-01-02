@@ -157,8 +157,9 @@ DEBUG = True
 
 # Static files setup
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
-    BASE_DIR / 'static'
+    os.path.join(BASE_DIR, 'static/'),
 ]
 
 # Media files setup
