@@ -189,6 +189,11 @@ def payment_success(request):
         # Update order status
         latest_order.status = 'paid'
         latest_order.payment_status = 'paid'
+
+
+        # Update merchant total_orders
+        merchant = latest_order.merchant
+        merchant.total_orders += 1
         latest_order.save()
         
         return render(request, 'orders/payment_success.html', {

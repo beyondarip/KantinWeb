@@ -320,6 +320,7 @@
 
 <!-- Team Section -->
 <!-- Team Section -->
+<!-- Team Section -->
 <section class="py-24 bg-neutral overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto mb-16">
@@ -331,19 +332,30 @@
             <!-- Team Member 1 -->
             <div class="group">
                 <div class="relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:shadow-xl">
-                    <div class="aspect-w-4 aspect-h-5 relative">
-                        <img src="https://placehold.co/400x500" alt="Team Member 1"
-                             class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500?text=Image+Not+Available';">
+                    <!-- Fixed aspect ratio container -->
+                    <div class="relative pb-[125%]">
+                        <img src="{% static 'images/team-1.png' %}"
+                             alt="Team Member 1"
+                             class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                             loading="lazy"
+                             >
                         <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/0 to-black/0"></div>
                     </div>
+
                     <div class="absolute bottom-0 w-full p-6 text-white transition-all duration-300 translate-y-6 group-hover:translate-y-0">
                         <div class="transform transition-transform duration-300">
-                            <h3 class="text-2xl font-bold mb-1">Nama Lengkap</h3>
-                            <p class="text-gray-200 text-sm mb-2">NIM: 123456789</p>
-                            <p class="text-gray-300 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Teknik Informatika</p>
+                            <h3 class="text-2xl font-bold mb-1">John Doe</h3>
+                            <p class="text-gray-200 text-sm mb-2">Frontend Developer</p>
+                            <p class="text-gray-300 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                Lead UI/UX Designer
+                            </p>
                             <div class="flex space-x-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <!-- Social media links -->
+                                <a href="#" class="text-white hover:text-gray-300 transition-colors duration-200">
+                                    <i class="fab fa-github text-lg"></i>
+                                </a>
+                                <a href="#" class="text-white hover:text-gray-300 transition-colors duration-200">
+                                    <i class="fab fa-linkedin text-lg"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -353,19 +365,29 @@
             <!-- Team Member 2 -->
             <div class="group">
                 <div class="relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:shadow-xl">
-                    <div class="aspect-w-4 aspect-h-5 relative">
-                        <img src="{% static 'images/team-2.jpg' %}" alt="Team Member 2" 
-                             class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500?text=Image+Not+Available';">
+                    <div class="relative pb-[125%]">
+                        <img src="{% static 'images/hero.jpg' %}"
+                             alt="Team Member 2"
+                             class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                             loading="lazy"
+                             >
                         <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/0 to-black/0"></div>
                     </div>
+
                     <div class="absolute bottom-0 w-full p-6 text-white transition-all duration-300 translate-y-6 group-hover:translate-y-0">
                         <div class="transform transition-transform duration-300">
-                            <h3 class="text-2xl font-bold mb-1">Nama Lengkap</h3>
-                            <p class="text-gray-200 text-sm mb-2">NIM: 123456789</p>
-                            <p class="text-gray-300 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Teknik Informatika</p>
+                            <h3 class="text-2xl font-bold mb-1">Jane Smith</h3>
+                            <p class="text-gray-200 text-sm mb-2">Backend Developer</p>
+                            <p class="text-gray-300 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                System Architect
+                            </p>
                             <div class="flex space-x-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <!-- Social media links -->
+                                <a href="#" class="text-white hover:text-gray-300 transition-colors duration-200">
+                                    <i class="fab fa-github text-lg"></i>
+                                </a>
+                                <a href="#" class="text-white hover:text-gray-300 transition-colors duration-200">
+                                    <i class="fab fa-linkedin text-lg"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -375,19 +397,29 @@
             <!-- Team Member 3 -->
             <div class="group">
                 <div class="relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:shadow-xl">
-                    <div class="aspect-w-4 aspect-h-5 relative">
-                        <img src="{% static 'images/team-1.png' %}" alt="Team Member 3" 
-                             class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                             onerror="this.onerror=null;this.src='https://via.placeholder.com/400x500?text=Image+Not+Available';">
+                    <div class="relative pb-[125%]">
+                        <img src="{% static 'images/hero.jpg' %}"
+                             alt="Team Member 3"
+                             class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                             loading="lazy"
+                             >
                         <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/0 to-black/0"></div>
                     </div>
+
                     <div class="absolute bottom-0 w-full p-6 text-white transition-all duration-300 translate-y-6 group-hover:translate-y-0">
                         <div class="transform transition-transform duration-300">
-                            <h3 class="text-2xl font-bold mb-1">Nama Lengkap</h3>
-                            <p class="text-gray-200 text-sm mb-2">NIM: 123456789</p>
-                            <p class="text-gray-300 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Teknik Informatika</p>
+                            <h3 class="text-2xl font-bold mb-1">Mike Johnson</h3>
+                            <p class="text-gray-200 text-sm mb-2">Full Stack Developer</p>
+                            <p class="text-gray-300 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                Tech Lead
+                            </p>
                             <div class="flex space-x-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <!-- Social media links -->
+                                <a href="#" class="text-white hover:text-gray-300 transition-colors duration-200">
+                                    <i class="fab fa-github text-lg"></i>
+                                </a>
+                                <a href="#" class="text-white hover:text-gray-300 transition-colors duration-200">
+                                    <i class="fab fa-linkedin text-lg"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
