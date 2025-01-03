@@ -296,7 +296,7 @@ import calendar
 class MerchantOrderListView(LoginRequiredMixin, ListView):
     template_name = 'merchants/dashboard/orders_list.html'
     context_object_name = 'orders'
-    paginate_by = 10
+    # paginate_by = 10
 
     def get_queryset(self):
         merchant = self.request.user.merchant
