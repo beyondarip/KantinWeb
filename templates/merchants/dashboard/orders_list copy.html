@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Management - KantinKu{% endblock %}
+
+{% block content %}
+<!-- Keep the existing header and stats cards -->
+
+<!-- Orders Table Section -->
+<div class="mt-8 bg-white shadow-sm rounded-xl overflow-hidden">
+    <!-- Search and Filters -->
+    <div class="p-6 border-b border-gray-200">
+        <form method="get" class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
+            <!-- Search -->
+            <div class="flex-1">
+                <div class="relative">
+                    <input type="text" 
+                           name="search"
+                           value="{{ search_query }}"
+                           placeholder="Search orders..."
+                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-secondary focus:border-secondary">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Status Filter -->
+            <div class="w-full md:w-48">
+                <select name="payment_status" 
+                        class="w-full border border-gray-300 rounded-lg text-sm focus:ring-secondary focus:border-secondary">
+                    <option value="">All Payment Statuses</option>
+                    {% for status_value, status_label in payment_status_choices %}
+                    <option value="{{ status_value }}" {% if status_value == active_payment_status %}selected{% endif %}>
+                        {{ status_label }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Date Filter -->
+            <div class="w-full md:w-48">
+                <select name="date_filter" 
+                        class="w-full border border-gray-300 rounded-lg text-sm focus:ring-secondary focus:border-secondary">
+                    <option value="">All Time</option>
+                    <option value="today" {% if active_date_filter == 'today' %}selected{% endif %}>Today</option>
+                    <option value="week" {% if active_date_filter == 'week' %}selected{% endif %}>Last 7 Days</option>
+                    <option value="month" {% if active_date_filter == 'month' %}selected{% endif %}>Last 30 Days</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" 
+                    class="w-full md:w-auto px-4 py-2 bg-secondary text-white rounded-lg text-sm font-medium hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
+                Filter
+            </button>
+        </form>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                {% for order in orders %}
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="text-sm font-medium text-gray-900">#{{ order.id }}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">{{ order.user.username }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            {% if order.payment_status == 'paid' %}bg-green-100 text-green-800
+                            {% elif order.payment_status == 'pending' %}bg-yellow-100 text-yellow-800
+                            {% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ order.get_payment_status_display }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">Rp {{ order.total_amount|floatformat:0 }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">{{ order.created_at|date:"M d, Y" }}</div>
+                        <div class="text-sm text-gray-500">{{ order.created_at|time:"H:i" }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="{% url 'merchants:merchant_order_detail' order.pk %}" 
+                           class="text-secondary hover:text-secondary/90">
+                            View Details
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                        No orders found matching your criteria.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Improved Pagination -->
+    {% if is_paginated %}
+    <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+            <div>
+                <p class="text-sm text-gray-700">
+                    Showing
+                    <span class="font-medium">{{ page_obj.start_index }}</span>
+                    to
+                    <span class="font-medium">{{ page_obj.end_index }}</span>
+                    of
+                    <span class="font-medium">{{ paginator.count }}</span>
+                    results
+                </p>
+            </div>
+            <div>
+                <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                    {% if page_obj.has_previous %}
+                    <a href="{{ base_url }}&page={{ page_obj.previous_page_number }}" 
+                       class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                        Previous
+                    </a>
+                    {% endif %}
+
+                    {% if page_obj.number|add:"-2" > 1 %}
+                        <a href="{{ base_url }}&page=1" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">1</a>
+                        {% if page_obj.number|add:"-2" > 2 %}
+                            <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">...</span>
+                        {% endif %}
+                    {% endif %}
+
+                    {% for i in paginator.page_range %}
+                        {% if i >= page_obj.number|add:"-2" and i <= page_obj.number|add:"2" %}
+                            {% if page_obj.number == i %}
+                                <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-secondary text-sm font-medium text-white">{{ i }}</span>
+                            {% else %}
+                                <a href="{{ base_url }}&page={{ i }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">{{ i }}</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.number|add:"2" < paginator.num_pages %}
+                        {% if page_obj.number|add:"2" < paginator.num_pages|add:"-1" %}
+                            <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">...</span>
+                        {% endif %}
+                        <a href="{{ base_url }}&page={{ paginator.num_pages }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">{{ paginator.num_pages }}</a>
+                    {% endif %}
+
+                    {% if page_obj.has_next %}
+                    <a href="{{ base_url }}&page={{ page_obj.next_page_number }}" 
+                       class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                        Next
+                    </a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+
+        <!-- Mobile Pagination -->
+        <div class="flex items-center justify-between sm:hidden">
+            <div class="flex-1 flex justify-between">
+                {% if page_obj.has_previous %}
+                <a href="{{ base_url }}&page={{ page_obj.previous_page_number }}" 
+                   class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Previous
+                </a>
+                {% endif %}
+
+                <span class="text-sm text-gray-700">
+                    Page {{ page_obj.number }} of {{ paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                <a href="{{ base_url }}&page={{ page_obj.next_page_number }}" 
+                   class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                    Next
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

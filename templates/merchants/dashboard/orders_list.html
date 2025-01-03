@@ -209,324 +209,195 @@
     </div>
 </div>
 
-        <!-- Filters and Search -->
-        <div class="mt-8 bg-white shadow-sm rounded-xl overflow-hidden">
-            <div class="p-6 border-b border-gray-200">
-                <div class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
-                    <!-- Search -->
-                    <div class="flex-1">
-                        <div class="relative">
-                            <input type="text" 
-                                   id="searchInput"
-                                   placeholder="Search orders..."
-                                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-secondary focus:border-secondary">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Payment Status Filter -->
-                    <div class="w-full md:w-48">
-                        <select id="paymentStatusFilter" 
-                                class="w-full border border-gray-300 rounded-lg text-sm focus:ring-secondary focus:border-secondary">
-                            <option value="">All Payment Statuses</option>
-                            {% for status_value, status_label in payment_status_choices %}
-                            <option value="{{ status_value }}">{{ status_label }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <!-- Date Filter -->
-                    <div class="w-full md:w-48">
-                        <select id="dateFilter" 
-                                class="w-full border border-gray-300 rounded-lg text-sm focus:ring-secondary focus:border-secondary">
-                            <option value="">All Time</option>
-                            <option value="today">Today</option>
-                            <option value="week">Last 7 Days</option>
-                            <option value="month">Last 30 Days</option>
-                        </select>
-                    </div>
+<div class="p-6 border-b border-gray-200">
+    <form method="get" class="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
+        <!-- Search -->
+        <div class="flex-1">
+            <div class="relative">
+                <input type="text" 
+                       name="search"
+                       value="{{ search_query }}"
+                       placeholder="Search orders..."
+                       class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-secondary focus:border-secondary">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+                    </svg>
                 </div>
             </div>
+        </div>
 
-            <!-- Orders Table -->
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200" id="orderTableBody">
-                        {% for order in orders %}
-                        <tr class="hover:bg-gray-50 transition-colors order-row"
-                            data-order-id="{{ order.id }}"
-                            data-customer="{{ order.user.username }}"
-                            data-payment-status="{{ order.payment_status }}"
-                            data-date="{{ order.created_at|date:'Y-m-d' }}">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="text-sm font-medium text-gray-900">#{{ order.id }}</span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ order.user.username }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                    {% if order.payment_status == 'paid' %}bg-green-100 text-green-800
-                                    {% elif order.payment_status == 'pending' %}bg-yellow-100 text-yellow-800
-                                    {% else %}bg-red-100 text-red-800{% endif %}">
-                                    {{ order.get_payment_status_display }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">Rp {{ order.total_amount|floatformat:0 }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">{{ order.created_at|date:"M d, Y" }}</div>
-                                <div class="text-sm text-gray-500">{{ order.created_at|time:"H:i" }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="{% url 'merchants:merchant_order_detail' order.pk %}" 
-                                   class="text-secondary hover:text-secondary/90">
-                                    View Details
-                                </a>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr id="noOrdersRow" class="hidden">
-                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
-                                No orders found matching your criteria.
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+        <!-- Payment Status Filter -->
+        <div class="w-full md:w-48">
+            <select name="payment_status" 
+                    class="w-full border border-gray-300 rounded-lg text-sm focus:ring-secondary focus:border-secondary">
+                <option value="">All Payment Statuses</option>
+                {% for status_value, status_label in payment_status_choices %}
+                <option value="{{ status_value }}" {% if status_value == active_payment_status %}selected{% endif %}>
+                    {{ status_label }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
 
-            <!-- Pagination -->
-            {% if is_paginated %}
-            <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-                <div class="flex-1 flex justify-between sm:hidden">
-                    {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}" 
-                       class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                        Previous
+        <!-- Date Filter -->
+        <div class="w-full md:w-48">
+            <select name="date_filter" 
+                    class="w-full border border-gray-300 rounded-lg text-sm focus:ring-secondary focus:border-secondary">
+                <option value="">All Time</option>
+                <option value="today" {% if active_date_filter == 'today' %}selected{% endif %}>Today</option>
+                <option value="week" {% if active_date_filter == 'week' %}selected{% endif %}>Last 7 Days</option>
+                <option value="month" {% if active_date_filter == 'month' %}selected{% endif %}>Last 30 Days</option>
+            </select>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" 
+                class="w-full md:w-auto px-4 py-2 bg-secondary text-white rounded-lg text-sm font-medium hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
+            Filter
+        </button>
+    </form>
+</div>
+   
+  <!-- Orders Table -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for order in orders %}
+            <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="text-sm font-medium text-gray-900">#{{ order.id }}</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">{{ order.user.username }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                        {% if order.payment_status == 'paid' %}bg-green-100 text-green-800
+                        {% elif order.payment_status == 'pending' %}bg-yellow-100 text-yellow-800
+                        {% else %}bg-red-100 text-red-800{% endif %}">
+                        {{ order.get_payment_status_display }}
+                    </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">Rp {{ order.total_amount|floatformat:0 }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900">{{ order.created_at|date:"M d, Y" }}</div>
+                    <div class="text-sm text-gray-500">{{ order.created_at|time:"H:i" }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <a href="{% url 'merchants:merchant_order_detail' order.pk %}" 
+                       class="text-secondary hover:text-secondary/90">
+                        View Details
                     </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                    No orders found matching your criteria.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Improved Pagination -->
+{% if is_paginated %}
+<div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+        <div>
+            <p class="text-sm text-gray-700">
+                Showing
+                <span class="font-medium">{{ page_obj.start_index }}</span>
+                to
+                <span class="font-medium">{{ page_obj.end_index }}</span>
+                of
+                <span class="font-medium">{{ paginator.count }}</span>
+                results
+            </p>
+        </div>
+        <div>
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                {% if page_obj.has_previous %}
+                <a href="{{ base_url }}&page={{ page_obj.previous_page_number }}" 
+                   class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    Previous
+                </a>
+                {% endif %}
+
+                {% if page_obj.number|add:"-2" > 1 %}
+                    <a href="{{ base_url }}&page=1" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">1</a>
+                    {% if page_obj.number|add:"-2" > 2 %}
+                        <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">...</span>
                     {% endif %}
-                    {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}" 
-                       class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                        Next
-                    </a>
+                {% endif %}
+
+                {% for i in paginator.page_range %}
+                    {% if i >= page_obj.number|add:"-2" and i <= page_obj.number|add:"2" %}
+                        {% if page_obj.number == i %}
+                            <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-secondary text-sm font-medium text-white">{{ i }}</span>
+                        {% else %}
+                            <a href="{{ base_url }}&page={{ i }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">{{ i }}</a>
+                        {% endif %}
                     {% endif %}
-                </div>
-                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                    <div>
-                        <p class="text-sm text-gray-700">
-                            Showing
-                            <span class="font-medium">{{ page_obj.start_index }}</span>
-                            to
-                            <span class="font-medium">{{ page_obj.end_index }}</span>
-                            of
-                            <span class="font-medium">{{ page_obj.paginator.count }}</span>
-                            results
-                        </p>
-                    </div>
-                </div>
-            </div>
+                {% endfor %}
+
+                {% if page_obj.number|add:"2" < paginator.num_pages %}
+                    {% if page_obj.number|add:"2" < paginator.num_pages|add:"-1" %}
+                        <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">...</span>
+                    {% endif %}
+                    <a href="{{ base_url }}&page={{ paginator.num_pages }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">{{ paginator.num_pages }}</a>
+                {% endif %}
+
+                {% if page_obj.has_next %}
+                <a href="{{ base_url }}&page={{ page_obj.next_page_number }}" 
+                   class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                    Next
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+
+    <!-- Mobile Pagination -->
+    <div class="flex items-center justify-between sm:hidden">
+        <div class="flex-1 flex justify-between">
+            {% if page_obj.has_previous %}
+            <a href="{{ base_url }}&page={{ page_obj.previous_page_number }}" 
+               class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                Previous
+            </a>
+            {% endif %}
+
+            <span class="text-sm text-gray-700">
+                Page {{ page_obj.number }} of {{ paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="{{ base_url }}&page={{ page_obj.next_page_number }}" 
+               class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                Next
+            </a>
             {% endif %}
         </div>
     </div>
 </div>
+{% endif %}
 
-<!-- JavaScript for filtering -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const paymentStatusFilter = document.getElementById('paymentStatusFilter');
-    const dateFilter = document.getElementById('dateFilter');
-    const orderRows = document.querySelectorAll('.order-row');
-    const noOrdersRow = document.getElementById('noOrdersRow');
+    </div>
+</div>
 
-    function filterOrders() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const paymentStatus = paymentStatusFilter.value;
-        const dateRange = dateFilter.value;
-        let visibleRows = 0;
-
-        orderRows.forEach(row => {
-            const orderId = row.querySelector('td:first-child').textContent;
-            const customer = row.dataset.customer.toLowerCase();
-            const rowPaymentStatus = row.dataset.paymentStatus;
-            const orderDate = new Date(row.dataset.date);
-            let showRow = true;
-
-            // Search filter
-            if (searchTerm) {
-                const matchesSearch = orderId.includes(searchTerm) || 
-                                    customer.includes(searchTerm);
-                if (!matchesSearch) showRow = false;
-            }
-
-            // Payment status filter
-            if (paymentStatus && rowPaymentStatus !== paymentStatus) {
-                showRow = false;
-            }
-
-            // Date filter
-            if (dateRange) {
-                const today = new Date();
-                const orderDateStr = row.dataset.date;
-                const orderDate = new Date(orderDateStr);
-                
-                switch(dateRange) {
-                    case 'today':
-                        if (orderDateStr !== today.toISOString().split('T')[0]) {
-                            showRow = false;
-                        }
-                        break;
-                    case 'week':
-                        const weekAgo = new Date();
-                        weekAgo.setDate(today.getDate() - 7);
-                        if (orderDate < weekAgo) {
-                            showRow = false;
-                        }
-                        break;
-                    case 'month':
-                        const monthAgo = new Date();
-                        monthAgo.setMonth(today.getMonth() - 1);
-                        if (orderDate < monthAgo) {
-                            showRow = false;
-                        }
-                        break;
-                }
-            }
-
-            row.classList.toggle('hidden', !showRow);
-            if (showRow) visibleRows++;
-        });
-
-        // Show/hide "No orders found" message
-        noOrdersRow.classList.toggle('hidden', visibleRows > 0);
-    }
-
-    // Event listeners for filter changes
-    searchInput.addEventListener('input', filterOrders);
-    paymentStatusFilter.addEventListener('change', filterOrders);
-    dateFilter.addEventListener('change', filterOrders);
-
-    // Initialize
-    filterOrders();
-});
-</script>
-<!-- Add this script before the closing body tag -->
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Revenue Chart
-    const monthlyData = {{ monthly_revenues|safe }};
-    const months = monthlyData.map(item => `${item.month} ${item.year}`);
-    const revenues = monthlyData.map(item => item.revenue);
-
-    const options = {
-        series: [{
-            name: 'Revenue',
-            data: revenues
-        }],
-        chart: {
-            height: 320,
-            type: 'area',
-            toolbar: {
-                show: false
-            },
-            fontFamily: 'Inter, sans-serif',
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            curve: 'smooth',
-            width: 3
-        },
-        colors: ['#7C3AED'], // Purple color
-        fill: {
-            type: 'gradient',
-            gradient: {
-                shadeIntensity: 1,
-                opacityFrom: 0.4,
-                opacityTo: 0.1,
-                stops: [0, 100]
-            }
-        },
-        xaxis: {
-            categories: months,
-            labels: {
-                style: {
-                    colors: '#6B7280',
-                    fontSize: '12px',
-                    fontFamily: 'Inter, sans-serif'
-                }
-            },
-            axisBorder: {
-                show: false
-            },
-            axisTicks: {
-                show: false
-            }
-        },
-        yaxis: {
-            labels: {
-                style: {
-                    colors: '#6B7280',
-                    fontSize: '12px',
-                    fontFamily: 'Inter, sans-serif'
-                },
-                formatter: function(value) {
-                    return 'Rp ' + value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                }
-            }
-        },
-        grid: {
-            borderColor: '#F3F4F6',
-            strokeDashArray: 4,
-            xaxis: {
-                lines: {
-                    show: true
-                }
-            },
-            yaxis: {
-                lines: {
-                    show: true
-                }
-            },
-            padding: {
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 10
-            }
-        },
-        tooltip: {
-            y: {
-                formatter: function(value) {
-                    return 'Rp ' + value.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                }
-            }
-        }
-    };
-
-    if (document.querySelector("#revenueChart")) {
-        const chart = new ApexCharts(document.querySelector("#revenueChart"), options);
-        chart.render();
-    }
-});
-</script>
 {% endblock %}

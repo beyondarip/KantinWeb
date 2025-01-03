@@ -292,15 +292,45 @@ from django.db.models.functions import TruncMonth
 from orders.models import Order
 from datetime import datetime, timedelta
 import calendar
+from django.utils import timezone
 
 class MerchantOrderListView(LoginRequiredMixin, ListView):
     template_name = 'merchants/dashboard/orders_list.html'
     context_object_name = 'orders'
-    # paginate_by = 10
+    paginate_by = 10
 
     def get_queryset(self):
         merchant = self.request.user.merchant
-        return Order.objects.filter(merchant=merchant).order_by('-created_at')
+        queryset = Order.objects.filter(merchant=merchant)
+
+        # Search filter
+        search = self.request.GET.get('search')
+        if search:
+            queryset = queryset.filter(
+                Q(id__icontains=search) |
+                Q(user__username__icontains=search) |
+                Q(note__icontains=search)
+            )
+
+        # Payment status filter
+        payment_status = self.request.GET.get('payment_status')
+        if payment_status:
+            queryset = queryset.filter(payment_status=payment_status)
+
+        # Date filter
+        date_filter = self.request.GET.get('date_filter')
+        if date_filter:
+            today = timezone.now()
+            if date_filter == 'today':
+                queryset = queryset.filter(created_at__date=today.date())
+            elif date_filter == 'week':
+                week_ago = today - timedelta(days=7)
+                queryset = queryset.filter(created_at__gte=week_ago)
+            elif date_filter == 'month':
+                month_ago = today - timedelta(days=30)
+                queryset = queryset.filter(created_at__gte=month_ago)
+
+        return queryset.order_by('-created_at')
 
     def get_monthly_revenue(self, year, month):
         """Helper method to get revenue for specific month"""
@@ -350,6 +380,26 @@ class MerchantOrderListView(LoginRequiredMixin, ListView):
 
         # Calculate month-over-month growth
         revenue_growth = ((current_month_revenue - prev_month_revenue) / prev_month_revenue * 100) if prev_month_revenue > 0 else 0
+
+        
+        # Get total revenue from paid orders
+        total_revenue = Order.objects.filter(
+            merchant=merchant,
+            payment_status='paid'
+        ).aggregate(total=Sum('total_amount'))['total'] or 0
+        
+        context['total_revenue'] = total_revenue
+        context['search_query'] = self.request.GET.get('search', '')
+        context['active_payment_status'] = self.request.GET.get('payment_status', '')
+        context['active_date_filter'] = self.request.GET.get('date_filter', '')
+        
+        # Add payment status choices
+        context['payment_status_choices'] = Order.PAYMENT_STATUS_CHOICES
+        
+        # Get base URL for pagination
+        base_url = f"?search={context['search_query']}&payment_status={context['active_payment_status']}&date_filter={context['active_date_filter']}"
+        context['base_url'] = base_url.replace(' ', '+')
+
         
         context.update({
             'current_month': requested_date,
