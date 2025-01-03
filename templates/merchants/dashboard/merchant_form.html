@@ -1,0 +1,172 @@
+<!-- templates/merchants/dashboard/merchant_form.html -->
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - KantinKu{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Header with Background Pattern -->
+    <div class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="flex-1 min-w-0">
+                    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                        {{ title }}
+                    </h2>
+                    <p class="mt-1 text-sm text-gray-500">
+                        Manage your store information and settings
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="bg-white shadow-sm rounded-xl overflow-hidden">
+            <form method="post" enctype="multipart/form-data" class="divide-y divide-gray-200">
+                {% csrf_token %}
+                
+                <!-- Store Image Section -->
+                <div class="px-8 py-6">
+                    <div class="flex flex-col items-center">
+                        <div class="relative group">
+                            <div class="w-40 h-40 rounded-full overflow-hidden bg-gray-100 border-4 border-white shadow-lg">
+                                {% if form.instance.image %}
+                                    <img id="preview-image" src="{{ form.instance.image.url }}" alt="Store Image" class="w-full h-full object-cover">
+                                {% else %}
+                                    <img id="preview-image" src="https://placehold.co/400x400" alt="Default Store Image" class="w-full h-full object-cover">
+                                {% endif %}
+                            </div>
+                            <label for="{{ form.image.id_for_label }}" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 rounded-full cursor-pointer transition-all duration-200">
+                                <div class="text-center">
+                                    <svg class="mx-auto h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                    <span class="mt-2 block text-sm font-medium text-white">
+                                        Change Photo
+                                    </span>
+                                </div>
+                            </label>
+                            {{ form.image }}
+                        </div>
+                        {% if form.image.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.image.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Store Information -->
+                <div class="px-8 py-6 space-y-6">
+                    <div>
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">Store Information</h3>
+                        <p class="mt-1 text-sm text-gray-500">
+                            This information will be displayed publicly so be careful what you share.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-6">
+                        <!-- Store Name -->
+                        <div>
+                            <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                Store Name
+                            </label>
+                            <div class="mt-1">
+                                {{ form.name }}
+                            </div>
+                            {% if form.name.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Store Description -->
+                        <div>
+                            <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                                Description
+                            </label>
+                            <div class="mt-1">
+                                {{ form.description }}
+                            </div>
+                            {% if form.description.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.description.errors.0 }}</p>
+                            {% endif %}
+                            <p class="mt-2 text-sm text-gray-500">
+                                Brief description of your store. URLs are hyperlinked.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="px-8 py-6">
+                    <div>
+                        <h3 class="text-lg font-medium leading-6 text-gray-900">Categories</h3>
+                        <p class="mt-1 text-sm text-gray-500">
+                            Select the categories that best describe your store.
+                        </p>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-3">
+                        {% for category in form.categories %}
+                        <label class="relative flex items-start p-4 bg-white border rounded-xl cursor-pointer hover:border-secondary focus-within:ring-2 focus-within:ring-secondary transition-colors">
+                            {{ category.tag }}
+                            <span class="ml-3 text-sm">
+                                <span class="font-medium text-gray-900">{{ category.choice_label }}</span>
+                            </span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    {% if form.categories.errors %}
+                    <p class="mt-2 text-sm text-red-600">{{ form.categories.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Form Actions -->
+                <div class="px-8 py-6 bg-gray-50 flex justify-end space-x-3">
+                    <button type="button" 
+                            onclick="window.history.back()" 
+                            class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
+                        Cancel
+                    </button>
+                    <button type="submit" 
+                            class="px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-secondary hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary">
+                        {{ submit_text }}
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        {% if object %}
+        <!-- Delete Store Section -->
+        <div class="mt-10 bg-white shadow-sm rounded-xl overflow-hidden">
+            <div class="px-8 py-6">
+                <h3 class="text-lg font-medium leading-6 text-red-600">Delete Store</h3>
+                <div class="mt-2 max-w-xl text-sm text-gray-500">
+                    <p>Once you delete your store, it cannot be recovered. Please be certain.</p>
+                </div>
+                <div class="mt-5">
+                    <a href="{% url 'merchants:merchant_delete' %}" 
+                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-red-600 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                       onclick="return confirm('Are you sure you want to delete your store? This action cannot be undone.')">
+                        Delete Store
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.getElementById('{{ form.image.id_for_label }}').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('preview-image').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+{% endblock %}

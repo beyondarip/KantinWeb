@@ -16,6 +16,141 @@ class HomeView(ListView):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         return context
+    
+# merchants/views.py
+
+from django.views.generic import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.contrib import messages
+from .models import Merchant
+from .forms import MerchantRegistrationForm
+
+# class MerchantRegistrationView(LoginRequiredMixin, CreateView):
+#     model = Merchant
+#     template_name = 'merchants/dashboard/merchant_registration.html'
+#     form_class = MerchantRegistrationForm
+#     success_url = reverse_lazy('merchants:dashboard')
+    
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['categories'] = Category.objects.all()
+#         return context
+    
+#     def form_valid(self, form):
+#         form.instance.user = self.request.user
+#         messages.success(self.request, 'Toko berhasil dibuat!')
+#         return super().form_valid(form)
+    
+#     def dispatch(self, request, *args, **kwargs):
+#         # Redirect if user already has a merchant
+#         if hasattr(request.user, 'merchant'):
+#             messages.info(request, 'Anda sudah memiliki toko.')
+#             return redirect('merchants:dashboard')
+#         return super().dispatch(request, *args, **kwargs)
+
+# merchants/views.py
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.contrib import messages
+from django.shortcuts import redirect
+from .models import Merchant
+from .forms import MerchantForm
+
+class MerchantCreateView(LoginRequiredMixin, CreateView):
+    model = Merchant
+    form_class = MerchantForm
+    template_name = 'merchants/dashboard/merchant_form.html'
+    success_url = reverse_lazy('merchants:dashboard')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Create Store'
+        context['submit_text'] = 'Create Store'
+        return context
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        response = super().form_valid(form)
+        messages.success(self.request, 'Store created successfully!')
+        return response
+
+class MerchantUpdateView(LoginRequiredMixin, UpdateView):
+    model = Merchant
+    form_class = MerchantForm
+    template_name = 'merchants/dashboard/merchant_form.html'
+    success_url = reverse_lazy('merchants:dashboard')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Update Store'
+        context['submit_text'] = 'Save Changes'
+        return context
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Store updated successfully!')
+        return response
+
+    def get_object(self, queryset=None):
+        return self.request.user.merchant
+
+class MerchantDeleteView(LoginRequiredMixin, DeleteView):
+    model = Merchant
+    template_name = 'merchants/dashboard/merchant_confirm_delete.html'
+    success_url = reverse_lazy('merchants:dashboard')
+
+    def get_object(self, queryset=None):
+        return self.request.user.merchant
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Store deleted successfully!')
+        return super().delete(request, *args, **kwargs)
+
+class MerchantDashboardView(LoginRequiredMixin, ListView):
+    template_name = 'merchants/dashboard/dashboard.html'
+    model = MenuItem
+    context_object_name = 'menu_items'
+    
+    def get_queryset(self):
+        # Gunakan try-except untuk lebih robust
+        try:
+            merchant = self.request.user.merchant
+            return MenuItem.objects.filter(merchant=merchant)
+        except Merchant.DoesNotExist:
+            return MenuItem.objects.none()
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(f"User: {self.request.user}")
+        print(f"Is merchant: {self.request.user.is_merchant}")
+        print(f"Has merchant attr: {hasattr(self.request.user, 'merchant')}")
+        # Cek apakah user adalah merchant
+        if not self.request.user.is_merchant:
+            context['has_merchant'] = False
+            return context
+            
+        # Jika user adalah merchant, cek merchant object
+        try:
+            merchant = Merchant.objects.get(user=self.request.user)
+            context['has_merchant'] = True
+            context['merchant'] = merchant
+            context['total_items'] = self.get_queryset().count()
+            context['categories'] = Category.objects.all()
+        except Merchant.DoesNotExist:
+            context['has_merchant'] = False
+            
+        return context
+
+#     def get_queryset(self):
+#         return MenuItem.objects.filter(merchant__user=self.request.user)
+    
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['total_items'] = self.get_queryset().count()
+#         context['categories'] = Category.objects.all()
+#         return context
 
 class MerchantListView(ListView):
     template_name = 'merchants/merchant_list.html'
@@ -87,19 +222,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from .models import MenuItem, Category
 
-class MerchantDashboardView(LoginRequiredMixin, ListView):
-    template_name = 'merchants/dashboard/dashboard.html'
-    model = MenuItem
-    context_object_name = 'menu_items'
+# class MerchantDashboardView(LoginRequiredMixin, ListView):
+#     template_name = 'merchants/dashboard/dashboard.html'
+#     model = MenuItem
+#     context_object_name = 'menu_items'
     
-    def get_queryset(self):
-        return MenuItem.objects.filter(merchant__user=self.request.user)
+#     def get_queryset(self):
+#         return MenuItem.objects.filter(merchant__user=self.request.user)
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['total_items'] = self.get_queryset().count()
-        context['categories'] = Category.objects.all()
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['total_items'] = self.get_queryset().count()
+#         context['categories'] = Category.objects.all()
+#         return context
 
 class MenuItemCreateView(LoginRequiredMixin, CreateView):
     model = MenuItem
