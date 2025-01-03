@@ -281,3 +281,96 @@ class MenuItemUpdateView(LoginRequiredMixin, UpdateView):
     form_class = MenuItemForm
     template_name = 'merchants/dashboard/menu_form.html'
     success_url = reverse_lazy('merchants:dashboard')
+
+
+# merchants/views.py
+# merchants/views.py
+from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Sum
+from django.db.models.functions import TruncMonth
+from orders.models import Order
+from datetime import datetime, timedelta
+import calendar
+
+class MerchantOrderListView(LoginRequiredMixin, ListView):
+    template_name = 'merchants/dashboard/orders_list.html'
+    context_object_name = 'orders'
+    paginate_by = 10
+
+    def get_queryset(self):
+        merchant = self.request.user.merchant
+        return Order.objects.filter(merchant=merchant).order_by('-created_at')
+
+    def get_monthly_revenue(self, year, month):
+        """Helper method to get revenue for specific month"""
+        return Order.objects.filter(
+            merchant=self.request.user.merchant,
+            payment_status='paid',
+            created_at__year=year,
+            created_at__month=month
+        ).aggregate(total=Sum('total_amount'))['total'] or 0
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        merchant = self.request.user.merchant
+        
+        # Get requested month/year or default to current
+        current_date = datetime.now()
+        requested_year = int(self.request.GET.get('year', current_date.year))
+        requested_month = int(self.request.GET.get('month', current_date.month))
+        requested_date = datetime(requested_year, requested_month, 1)
+
+        # Get previous and next month/year
+        prev_month = (requested_date - timedelta(days=1)).replace(day=1)
+        next_month = (requested_date + timedelta(days=32)).replace(day=1)
+        
+        # Get revenue and order data for current month
+        current_month_orders = Order.objects.filter(
+            merchant=merchant,
+            created_at__year=requested_year,
+            created_at__month=requested_month
+        )
+        
+        current_month_revenue = self.get_monthly_revenue(requested_year, requested_month)
+        prev_month_revenue = self.get_monthly_revenue(prev_month.year, prev_month.month)
+        
+        # Get order statistics
+        paid_orders = current_month_orders.filter(payment_status='paid').count()
+        pending_orders = current_month_orders.filter(payment_status='pending').count()
+        total_orders = current_month_orders.count()
+        
+        # Calculate daily average for current month
+        days_in_month = calendar.monthrange(requested_year, requested_month)[1]
+        if current_date.year == requested_year and current_date.month == requested_month:
+            days_passed = current_date.day
+        else:
+            days_passed = days_in_month
+        daily_average = current_month_revenue / days_passed if days_passed > 0 else 0
+
+        # Calculate month-over-month growth
+        revenue_growth = ((current_month_revenue - prev_month_revenue) / prev_month_revenue * 100) if prev_month_revenue > 0 else 0
+        
+        context.update({
+            'current_month': requested_date,
+            'prev_month': prev_month,
+            'next_month': next_month if next_month <= current_date else None,
+            'current_month_revenue': current_month_revenue,
+            'prev_month_revenue': prev_month_revenue,
+            'daily_average': daily_average,
+            'revenue_growth': revenue_growth,
+            'days_passed': days_passed,
+            'days_in_month': days_in_month,
+            'paid_orders': paid_orders,
+            'pending_orders': pending_orders,
+            'total_orders': total_orders
+        })
+        
+        return context
+
+class MerchantOrderDetailView(LoginRequiredMixin, DetailView):
+    template_name = 'merchants/dashboard/order_detail.html'
+    context_object_name = 'order'
+
+    def get_queryset(self):
+        return Order.objects.filter(merchant=self.request.user.merchant)
