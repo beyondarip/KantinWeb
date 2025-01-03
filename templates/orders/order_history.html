@@ -42,64 +42,69 @@
 
                     <!-- Action Buttons -->
                   <!-- Action Buttons -->
-<div class="mt-4 flex justify-end space-x-3">
-    <!-- Detail Button - Selalu tampil untuk semua status -->
-    <a href="{% url 'orders:order_detail' order.id %}" 
-       class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-        </svg>
-        Detail Pesanan
-    </a>
-
-    {% if order.status == 'paid' and not order.is_expired %}
-    <!-- Bukti Pembayaran untuk pesanan yang sudah dibayar -->
-    <a href="{% url 'orders:order_detail' order.id %}#payment-proof" 
-       class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-secondary hover:bg-secondary/90">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-        Bukti Pembayaran
-    </a>
-    {% if order.status == 'ready' %}
-    <!-- QR Code untuk pengambilan pesanan -->
-    <a href="{% url 'orders:order_detail' order.id %}#qr-code"
-       class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-success hover:bg-success/90">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
-        </svg>
-        Lihat QR Code
-    </a>
-    {% endif %}
-    {% elif order.status == 'pending' %}
-    <!-- Tombol untuk pesanan pending -->
-    <div class="flex space-x-3">
-        <a href="{% url 'orders:payment' order.id %}" 
-           class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-accent hover:bg-accent/90">
+<!-- Action Buttons with Improved Mobile Layout -->
+<div class="mt-4">
+    <!-- Stack buttons vertically on mobile, horizontal on tablet/desktop -->
+    <div class="flex flex-col sm:flex-row sm:justify-end sm:space-x-3 space-y-2 sm:space-y-0">
+        <!-- Detail Button - Always visible -->
+        <a href="{% url 'orders:order_detail' order.id %}" 
+           class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                      d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
             </svg>
-            Lanjutkan Pembayaran
+            Detail Pesanan
         </a>
-        <form action="{% url 'orders:cancel_order' order.id %}" method="POST" class="inline">
-            {% csrf_token %}
-            <button type="submit" 
-                    class="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-danger hover:bg-danger/90"
-                    onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">
+
+        {% if order.status == 'paid' and not order.is_expired %}
+            <!-- Bukti Pembayaran for paid orders -->
+            <a href="{% url 'orders:order_detail' order.id %}#payment-proof" 
+               class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-secondary hover:bg-secondary/90">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                Batalkan Pesanan
-            </button>
-        </form>
+                Bukti Pembayaran
+            </a>
+
+            {% if order.status == 'ready' %}
+                <!-- QR Code for order pickup -->
+                <a href="{% url 'orders:order_detail' order.id %}#qr-code"
+                   class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-success hover:bg-success/90">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                    </svg>
+                    QR Code
+                </a>
+            {% endif %}
+
+        {% elif order.status == 'pending' %}
+            <!-- Buttons for pending orders -->
+            <a href="{% url 'orders:payment' order.id %}" 
+               class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-accent hover:bg-accent/90">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                Lanjutkan Pembayaran
+            </a>
+
+            <!-- <form action="{% url 'orders:cancel_order' order.id %}" method="POST" class="w-full sm:w-auto">
+                {% csrf_token %}
+                <button type="submit" 
+                        class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white bg-danger hover:bg-danger/90"
+                        onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                    Batalkan Pesanan
+                </button>
+            </form> -->
+        {% endif %}
     </div>
-    {% endif %}
 </div>
                 </div>
             </div>
