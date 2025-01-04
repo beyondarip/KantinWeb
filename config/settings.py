@@ -155,13 +155,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # DEBUG = os.getenv('DEBUG') == 'True'
 DEBUG = True
 
-# Static files setup
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+import os
+from pathlib import Path
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static/'),
-]
+# Base directory
+BASE_DIR = Path(__file__).resolve().parent.parent
+IS_PRODUCTION = False
+# Deteksi environment secara otomatis
+IS_PRODUCTION = os.environ.get('DJANGO_ENV') == 'production'
+# Static settings
+STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+if IS_PRODUCTION:
+    pass
+else:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 
 # Media files setup
