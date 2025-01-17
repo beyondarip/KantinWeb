@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.urls import reverse
 # Create your models here.
 from django.db import models
 from accounts.models import User
@@ -34,6 +34,9 @@ class Merchant(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('merchants:merchant_detail', args=[self.pk])
+
 class MenuItem(models.Model):
     merchant = models.ForeignKey(Merchant, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
@@ -46,5 +49,7 @@ class MenuItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def get_absolute_url(self):
+        return reverse('merchants:merchant_detail', args=[self.merchant.id])
     def __str__(self):
         return f"{self.name} - {self.merchant.name}"

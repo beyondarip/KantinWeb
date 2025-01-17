@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Sitemap: https://{{ site }}/sitemap.xml
+
+Disallow: /admin/
+Disallow: /accounts/login/
+Disallow: /accounts/register/
+Disallow: /dashboard/ 

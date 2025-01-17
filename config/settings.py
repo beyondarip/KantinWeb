@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
 
   
     # Local apps
@@ -78,6 +79,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                     'orders.context_processors.cart_count',
+                'config.context_processors.site_domain',
             ],
         },
     },
@@ -166,8 +168,8 @@ IS_PRODUCTION = os.environ.get('DJANGO_ENV') == 'production'
 # Static settings
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 if IS_PRODUCTION:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
     pass
 else:
     STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
