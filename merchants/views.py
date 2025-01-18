@@ -3,6 +3,20 @@ from django.db.models import Q
 from .models import Merchant, Category, MenuItem
 from .forms import MenuItemForm
 
+from django.views.generic import TemplateView
+
+# merchants/views.py
+class SDGsArticleView(TemplateView):
+    template_name = 'merchants/sdgs_article.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        article_id = self.kwargs['article_id']
+        context['article_id'] = article_id
+        return context
+
+class SDGsView(TemplateView):
+    template_name = 'merchants/sdgs.html'
 
 class HomeView(ListView):
     template_name = 'home.html'

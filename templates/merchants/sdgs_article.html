@@ -1,0 +1,684 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title %}
+{% if article_id == 1 %}
+Digitalisasi Sistem Kantin: Langkah ITPLN Menuju Smart Campus
+{% elif article_id == 2 %}
+Mendukung Konsumsi dan Produksi yang Bertanggung Jawab
+{% else %}
+Membangun Komunitas Kampus Berkelanjutan
+{% endif %}
+- KantinKu ITPLN
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative py-24 bg-gradient-to-b from-primary to-primary/95 overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 bg-grid-slate-100 bg-[size:20px_20px] opacity-10"></div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute inset-0">
+        <div class="absolute top-10 right-10 w-72 h-72 bg-secondary/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 left-10 w-72 h-72 bg-accent/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Breadcrumb -->
+        <nav class="flex items-center justify-center space-x-2 text-sm text-gray-300 mb-8">
+            <a href="{% url 'merchants:home' %}" class="hover:text-white">Home</a>
+            <span>→</span>
+            <a href="{% url 'merchants:sdgs' %}" class="hover:text-white">SDGs Impact</a>
+            <span>→</span>
+            <span>Article</span>
+        </nav>
+
+        <!-- Hero Content -->
+        <div class="text-center">
+            {% if article_id == 1 %}
+            <div class="inline-flex items-center px-4 py-2 bg-secondary/10 rounded-full mb-6">
+                <span class="animate-pulse w-2 h-2 rounded-full bg-secondary mr-2"></span>
+                <span class="text-sm font-medium text-secondary">Smart Campus Initiative</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                Digitalisasi Sistem Kantin: Langkah ITPLN Menuju Smart Campus
+            </h1>
+            <p class="text-xl text-gray-200 max-w-3xl mx-auto">
+                Implementasi teknologi digital dalam sistem kantin sebagai bagian dari inisiatif smart campus ITPLN
+            </p>
+            {% elif article_id == 2 %}
+            <div class="inline-flex items-center px-4 py-2 bg-secondary/10 rounded-full mb-6">
+                <span class="animate-pulse w-2 h-2 rounded-full bg-secondary mr-2"></span>
+                <span class="text-sm font-medium text-secondary">SDG 12</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                Mendukung Konsumsi dan Produksi yang Bertanggung Jawab
+            </h1>
+            <p class="text-xl text-gray-200 max-w-3xl mx-auto">
+                Bagaimana KantinKu berkontribusi pada pengurangan limbah makanan dan efisiensi sumber daya
+            </p>
+            {% else %}
+            <div class="inline-flex items-center px-4 py-2 bg-secondary/10 rounded-full mb-6">
+                <span class="animate-pulse w-2 h-2 rounded-full bg-secondary mr-2"></span>
+                <span class="text-sm font-medium text-secondary">Community Impact</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                Membangun Komunitas Kampus Berkelanjutan
+            </h1>
+            <p class="text-xl text-gray-200 max-w-3xl mx-auto">
+                Impact sosial dan lingkungan dari implementasi sistem kantin digital di ITPLN
+            </p>
+            {% endif %}
+        </div>
+
+        <!-- Hero Image -->
+        <div class="mt-12 relative">
+            <div class="aspect-w-16 aspect-h-9 rounded-2xl overflow-hidden shadow-2xl">
+                <img src="{% static 'images/article' %}{{ article_id }}.jpg" 
+                     alt="Article Hero Image"
+                     class="w-full h-full object-cover">
+            </div>
+            <!-- SDG Badge -->
+            <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-white rounded-xl shadow-lg p-3">
+                <img src="{% static 'images/sdg12-logo.png' %}"
+                     alt="SDG 12 Logo"
+                     class="w-full h-full object-contain">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Article Metadata -->
+<section class="py-8 bg-white border-b">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <!-- Author Info -->
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 rounded-full overflow-hidden">
+                    <img src="{% static 'images/itpln-logo.png' %}" 
+                         alt="ITPLN Logo"
+                         class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h3 class="font-semibold text-primary">Institut Teknologi PLN</h3>
+                    <p class="text-sm text-gray-500">Published on January 19, 2025</p>
+                </div>
+            </div>
+            
+            <!-- Share Buttons -->
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-500">Share:</span>
+                <a href="#" class="w-8 h-8 flex items-center justify-center rounded-full bg-secondary/10 text-secondary hover:bg-secondary hover:text-white transition-colors">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                    </svg>
+                </a>
+                <a href="#" class="w-8 h-8 flex items-center justify-center rounded-full bg-secondary/10 text-secondary hover:bg-secondary hover:text-white transition-colors">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                    </svg>
+                </a>
+                <a href="#" class="w-8 h-8 flex items-center justify-center rounded-full bg-secondary/10 text-secondary hover:bg-secondary hover:text-white transition-colors">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <article class="prose prose-lg max-w-none">
+            {% if article_id == 1 %}
+            <!-- Article 1 Content -->
+            <h2 class="text-3xl font-bold text-primary mb-8">Revolusi Digital di Lingkungan Kampus</h2>
+            
+            <div class="mb-12">
+                <h3 class="text-2xl font-semibold text-primary mb-6">Transformasi Fundamental</h3>
+                <p class="text-gray-600 mb-6">
+                    Digitalisasi sistem kantin ITPLN merupakan langkah transformatif yang mengubah cara pengelolaan 
+                    dan pengoperasian layanan makanan di kampus. Inisiatif ini tidak hanya sekadar mengotomatisasi 
+                    proses yang ada, tetapi juga menciptakan ekosistem digital yang terintegrasi untuk mendukung 
+                    konsumsi dan produksi yang berkelanjutan.
+                </p>
+            </div>
+
+            <!-- Feature Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <!-- Smart Ordering System -->
+                <div class="bg-neutral rounded-xl p-6">
+                    <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-primary mb-4">Smart Ordering System</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Pre-order system dengan antarmuka yang user-friendly
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Penjadwalan pengambilan makanan otomatis
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Notifikasi real-time status pesanan
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Integrasi dengan sistem pembayaran digital
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Inventory Management -->
+                <div class="bg-neutral rounded-xl p-6">
+                    <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-primary mb-4">Inventory Management</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Tracking real-time stok bahan makanan
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Sistem peringatan otomatis untuk restok
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Analisis pola konsumsi untuk prediksi kebutuhan
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Manajemen rantai pasok digital
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="bg-neutral rounded-2xl p-8 mb-12">
+                <h3 class="text-2xl font-semibold text-primary mb-8">Dampak Implementasi</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Stat 1 -->
+                    <div class="text-center">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="text-3xl font-bold text-primary mb-2">50%</div>
+                        <p class="text-sm text-gray-600">Pengurangan Waktu Antrian</p>
+                    </div>
+
+                    <!-- Stat 2 -->
+                    <div class="text-center">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="text-3xl font-bold text-primary mb-2">75%</div>
+                        <p class="text-sm text-gray-600">Pemesanan Lebih Cepat</p>
+                    </div>
+
+                    <!-- Stat 3 -->
+                    <div class="text-center">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                        </div>
+                        <div class="text-3xl font-bold text-primary mb-2">40%</div>
+                        <p class="text-sm text-gray-600">Efisiensi Persiapan</p>
+                    </div>
+
+                    <!-- Stat 4 -->
+                    <div class="text-center">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                        </div>
+                        <div class="text-3xl font-bold text-primary mb-2">98%</div>
+                        <p class="text-sm text-gray-600">Akurasi Pesanan</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technology Stack -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-semibold text-primary mb-6">Rencana Pengembangan Teknologi</h3>
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4 bg-white p-6 rounded-xl shadow-sm">
+                        <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-primary mb-2">Artificial Intelligence</h4>
+                            <p class="text-gray-600 mb-4">
+                                Implementasi AI untuk meningkatkan akurasi prediksi permintaan, optimalisasi stok, dan personalisasi rekomendasi menu berdasarkan preferensi pengguna.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">Prediksi Permintaan</span>
+                                <span class="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">Machine Learning</span>
+                                <span class="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">Data Analytics</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4 bg-white p-6 rounded-xl shadow-sm">
+                        <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-primary mb-2">IoT Integration</h4>
+                            <p class="text-gray-600 mb-4">
+                                Penggunaan sensor IoT untuk monitoring suhu makanan, tracking pengiriman, dan manajemen peralatan dapur secara real-time.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">Smart Sensors</span>
+                                <span class="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">Real-time Monitoring</span>
+                                <span class="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">Automation</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4 bg-white p-6 rounded-xl shadow-sm">
+                        <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-primary mb-2">Blockchain Technology</h4>
+                            <p class="text-gray-600 mb-4">
+                                Implementasi blockchain untuk meningkatkan transparansi rantai pasok dan keamanan transaksi digital.
+                            </p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">Supply Chain</span>
+                                <span class="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">Smart Contracts</span>
+                                <span class="px-3 py-1 bg-secondary/10 text-secondary rounded-full text-sm">Traceability</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% elif article_id == 2 %}
+            <!-- Article 2 Content -->
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-primary mb-8">Implementasi SDG 12 di Kantin Kampus</h2>
+                
+                <div class="bg-neutral rounded-xl p-8 mb-8">
+                    <h3 class="text-2xl font-semibold text-primary mb-6">Strategi Pengurangan Limbah</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Food Waste Management -->
+                        <div>
+                            <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4">
+                                <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </div>
+                            <h4 class="text-lg font-semibold text-primary mb-4">Food Waste Management</h4>
+                            <ul class="space-y-3 text-gray-600">
+                                <li class="flex items-center">
+                                    <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Sistem prediksi permintaan akurat
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Porsi standar yang terukur
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Program donasi makanan berlebih
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Sustainable Packaging -->
+                        <div>
+                            <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4">
+                                <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                </svg>
+                            </div>
+                            <h4 class="text-lg font-semibold text-primary mb-4">Packaging Berkelanjutan</h4>
+                            <ul class="space-y-3 text-gray-600">
+                                <li class="flex items-center">
+                                    <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"></svg>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Wadah ramah lingkungan
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Program bring-your-own-container
+                                </li>
+                                <li class="flex items-center">
+                                    <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Sistem return-and-reuse
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Impact Metrics -->
+                <div class="bg-white rounded-xl shadow-sm p-8 mb-12">
+                    <h3 class="text-2xl font-semibold text-primary mb-6">Impact Metrics</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Metric 1 -->
+                        <div class="bg-neutral rounded-xl p-6 text-center">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-4">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                            <div class="text-3xl font-bold text-primary mb-2">40%</div>
+                            <p class="text-gray-600">Pengurangan Limbah Makanan</p>
+                            <p class="text-sm text-gray-500 mt-2">Dibandingkan tahun sebelumnya</p>
+                        </div>
+
+                        <!-- Metric 2 -->
+                        <div class="bg-neutral rounded-xl p-6 text-center">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-4">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div class="text-3xl font-bold text-primary mb-2">90%</div>
+                            <p class="text-gray-600">Pengurangan Penggunaan Kertas</p>
+                            <p class="text-sm text-gray-500 mt-2">Melalui digitalisasi sistem</p>
+                        </div>
+
+                        <!-- Metric 3 -->
+                        <div class="bg-neutral rounded-xl p-6 text-center">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-4">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                            </div>
+                            <div class="text-3xl font-bold text-primary mb-2">30%</div>
+                            <p class="text-gray-600">Efisiensi Energi</p>
+                            <p class="text-sm text-gray-500 mt-2">Optimalisasi penggunaan peralatan</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Program Section -->
+                <div class="space-y-8">
+                    <h3 class="text-2xl font-semibold text-primary mb-6">Program Berkelanjutan</h3>
+
+                    <!-- Educational Programs -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-primary mb-2">Program Edukasi</h4>
+                                <p class="text-gray-600 mb-4">
+                                    Seri program edukasi untuk meningkatkan kesadaran tentang konsumsi dan produksi berkelanjutan di lingkungan kampus.
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span class="text-gray-600">Workshop Food Waste Management</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span class="text-gray-600">Seminar Konsumsi Berkelanjutan</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span class="text-gray-600">Pelatihan Pengelolaan Limbah</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span class="text-gray-600">Kampanye Hemat Energi</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Community Involvement -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-primary mb-2">Keterlibatan Komunitas</h4>
+                                <p class="text-gray-600 mb-4">
+                                    Program-program yang melibatkan seluruh elemen kampus dalam mendukung konsumsi dan produksi berkelanjutan.
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span class="text-gray-600">Program Ambassador Keberlanjutan</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span class="text-gray-600">Kompetisi Ide Berkelanjutan</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span class="text-gray-600">Proyek Penelitian Mahasiswa</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        <span class="text-gray-600">Kolaborasi dengan Organisasi Lingkungan</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% else %}
+            <!-- Article 3 Content -->
+            <div class="mb-12">
+                <h2 class="text-3xl font-bold text-primary mb-8">Pemberdayaan Komunitas Kampus</h2>
+
+                <!-- Merchant Development Programs -->
+                <div class="bg-white rounded-xl shadow-sm p-8 mb-12">
+                    <h3 class="text-2xl font-semibold text-primary mb-6">Program Pengembangan Merchant</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Training Programs -->
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-primary">Pelatihan dan Edukasi</h4>
+                                    <ul class="mt-2 space-y-2 text-gray-600">
+                                        <li class="flex items-center">
+                                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                            Digital Business Management
+                                        </li>
+                                        <li class="flex items-center">
+                                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                            Food Safety & Hygiene
+                                        </li>
+                                        <li class="flex items-center">
+                                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                            Sustainable Business Practices
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Business Support -->
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-primary">Dukungan Bisnis</h4>
+                                    <ul class="mt-2 space-y-2 text-gray-600">
+                                        <li class="flex items-center">
+                                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                            Akses ke Platform Digital
+                                        </li>
+                                        <li class="flex items-center">
+                                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                            Konsultasi Bisnis
+                                        </li>
+                                        <li class="flex items-center">
+                                            <svg class="w-5 h-5 text-secondary mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                            </svg>
+                                            Networking Opportunities
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community Impact -->
+                <div class="bg-neutral rounded-xl p-8 mb-12">
+                    <h3 class="text-2xl font-semibold text-primary mb-6">Dampak pada Komunitas</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Economic Impact -->
+                        <div class="text-center">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-4">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div class="text-3xl font-bold text-primary mb-2">25%</div>
+                            <p class="text-gray-600">Peningkatan Pendapatan Merchant</p>
+                        </div>
+
+                        <!-- Employment -->
+                        <div class="text-center">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-4">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                            </div>
+                            <div class="text-3xl font-bold text-primary mb-2">50+</div>
+                            <p class="text-gray-600">Lapangan Kerja Baru</p>
+                        </div>
+
+                        <!-- Digital Adoption -->
+                        <div class="text-center">
+                            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-4">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div class="text-3xl font-bold text-primary mb-2">100%</div>
+                            <p class="text-gray-600">Adopsi Digital</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </article>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="bg-neutral py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-primary mb-6">Mari Bergabung dalam Perubahan</h2>
+        <p class="text-lg text-gray-600 mb-8">
+            Jadilah bagian dari transformasi digital dan keberlanjutan di kampus ITPLN
+        </p>
+        <a href="" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-secondary hover:bg-secondary-dark transition-colors">
+            Daftar Sekarang
+            <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+            </svg>
+        </a>
+    </div>
+</section>
+{% endblock %}

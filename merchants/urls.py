@@ -9,7 +9,8 @@ urlpatterns = [
     path('merchants/<int:pk>/', views.MerchantDetailView.as_view(), name='merchant_detail'),
     path('dashboard/orders/', views.MerchantOrderListView.as_view(), name='merchant_orders'),
     path('dashboard/orders/<int:pk>/', views.MerchantOrderDetailView.as_view(), name='merchant_order_detail'),
-
+    path('sdgs/', views.SDGsView.as_view(), name='sdgs'),
+    path('sdgs/article/<int:article_id>/', views.SDGsArticleView.as_view(), name='sdgs_article'),
   # path('dashboard/register/', views.MerchantRegistrationView.as_view(), name='merchant_registration'),
     path('dashboard/', views.MerchantDashboardView.as_view(), name='dashboard'),
     path('dashboard/menu/add/', views.MenuItemCreateView.as_view(), name='menu_create'),
