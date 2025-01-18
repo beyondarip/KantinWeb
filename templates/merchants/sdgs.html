@@ -1,0 +1,332 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title %}SDGs Impact - KantinKu ITPLN{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative py-20 bg-gradient-to-b from-primary to-primary/95 overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 bg-grid-slate-100 bg-[size:20px_20px] opacity-10"></div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute inset-0">
+        <div class="absolute top-10 right-10 w-72 h-72 bg-secondary/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 left-10 w-72 h-72 bg-accent/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                Dampak Keberlanjutan KantinKu
+            </h1>
+            <p class="text-xl text-gray-200 max-w-3xl mx-auto">
+                Mendukung SDG 12: Konsumsi dan Produksi yang Bertanggung Jawab melalui Inovasi Digital Kantin Kampus
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Stat 1 -->
+            <div class="bg-neutral rounded-xl p-8 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h3 class="text-3xl font-bold text-primary mb-2">40%</h3>
+                <p class="text-gray-600">Pengurangan Limbah Makanan</p>
+            </div>
+
+            <!-- Stat 2 -->
+            <div class="bg-neutral rounded-xl p-8 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-3xl font-bold text-primary mb-2">90%</h3>
+                <p class="text-gray-600">Pengurangan Penggunaan Kertas</p>
+            </div>
+
+            <!-- Stat 3 -->
+            <div class="bg-neutral rounded-xl p-8 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-3xl font-bold text-primary mb-2">50%</h3>
+                <p class="text-gray-600">Peningkatan Efisiensi Waktu</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-16 bg-neutral">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Left Content -->
+            <div>
+                <h2 class="text-3xl font-bold text-primary mb-6">
+                    Inovasi Digital untuk Konsumsi Berkelanjutan
+                </h2>
+                
+                <div class="prose prose-lg">
+                    <p class="text-gray-600 mb-6">
+                        KantinKu hadir sebagai solusi inovatif untuk mendukung konsumsi dan produksi yang bertanggung jawab di lingkungan kampus ITPLN. Melalui digitalisasi sistem pemesanan dan manajemen kantin, kami berkomitmen untuk mengurangi limbah makanan dan meningkatkan efisiensi operasional.
+                    </p>
+                    
+                    <div class="flex items-center space-x-2 text-secondary mb-6">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <a href="https://sdgs.itpln.ac.id/sdgs/sdgs12-responsible-consumption-and-production-itpln/" 
+                           class="text-secondary hover:text-secondary/80 transition-colors">
+                            Pelajari lebih lanjut tentang SDG 12 di ITPLN
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Feature List -->
+                <div class="space-y-6 mt-8">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-primary mb-2">Sistem Pre-Order Pintar</h3>
+                            <p class="text-gray-600">Memungkinkan prediksi jumlah produksi yang lebih akurat, mengurangi limbah makanan hingga 40%.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-primary mb-2">Manajemen Inventori Digital</h3>
+                            <p class="text-gray-600">Tracking real-time stok bahan makanan dan pencatatan digital mengurangi penggunaan kertas hingga 90%.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center">
+                                <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-primary mb-2">Efisiensi Operasional</h3>
+                            <p class="text-gray-600">Pengurangan waktu antrian hingga 50% dan optimalisasi jadwal produksi untuk efisiensi energi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Content - Image -->
+            <div class="relative">
+                <div class="aspect-w-16 aspect-h-9 rounded-2xl overflow-hidden">
+                    <img src="{% static 'images/sdgs-hero.webp' %}" 
+                         alt="Sustainable Campus Canteen"
+                         class="w-full h-full object-cover">
+                </div>
+
+                <!-- SDG Logo Overlay -->
+                <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-white rounded-xl shadow-lg p-4">
+                    <img src="{% static 'images/sdg12-logo.png' %}"
+                         alt="SDG 12 Logo"
+                         class="w-full h-full object-contain">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Articles Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-primary text-center mb-12">
+            Artikel Terkait SDGs
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Article 1 -->
+            <div class="group bg-neutral rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+                <div class="aspect-w-16 aspect-h-9">
+                    <img src="{% static 'images/article1.png' %}"
+                         alt="Digital Transformation"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="p-6">
+                    <h3 class="font-bold text-xl text-primary mb-3">
+                        Digitalisasi Sistem Kantin: Langkah ITPLN Menuju Smart Campus
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        Implementasi teknologi digital dalam sistem kantin sebagai bagian dari inisiatif smart campus ITPLN.
+                    </p>
+                    <a href="/sdgs/article/1" 
+                       class="inline-flex items-center text-secondary hover:text-secondary/80">
+                        Baca selengkapnya
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Article 2 -->
+            <div class="group bg-neutral rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+                <div class="aspect-w-16 aspect-h-9">
+                    <img src="{% static 'images/article2.jpg' %}"
+                         alt="Sustainable Consumption"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="p-6">
+                    <h3 class="font-bold text-xl text-primary mb-3">
+                        Mendukung Konsumsi dan Produksi yang Bertanggung Jawab
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        Bagaimana KantinKu berkontribusi pada pengurangan limbah makanan dan efisiensi sumber daya.
+                    </p>
+                    <a href="/sdgs/article/2" 
+                       class="inline-flex items-center text-secondary hover:text-secondary/80">
+                        Baca selengkapnya
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Article 3 -->
+            <div class="group bg-neutral rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+                <div class="aspect-w-16 aspect-h-9">
+                    <img src="{% static 'images/article3.jpg' %}"
+                         alt="Community Impact"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                </div>
+                <div class="p-6">
+                    <h3 class="font-bold text-xl text-primary mb-3">
+                        Membangun Komunitas Kampus Berkelanjutan
+                    </h3>
+                    <p class="text-gray-600 mb-4">
+                        Impact sosial dan lingkungan dari implementasi sistem kantin digital di ITPLN.
+                    </p>
+                    <a href="/sdgs/article/3" 
+                       class="inline-flex items-center text-secondary hover:text-secondary/80">
+                        Baca selengkapnya
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Timeline Section -->
+<section class="py-16 bg-neutral">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-primary text-center mb-12">
+            Roadmap Keberlanjutan
+        </h2>
+
+        <div class="relative">
+            <!-- Timeline Line -->
+            <div class="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-secondary/20"></div>
+
+            <div class="space-y-12">
+                <!-- 2025 -->
+                <div class="relative">
+                    <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+                            <div class="w-4 h-4 rounded-full bg-white"></div>
+                        </div>
+                    </div>
+                    <div class="ml-[calc(50%+2rem)] pl-8">
+                        <h3 class="text-xl font-bold text-primary mb-2">2025: Implementasi Penuh</h3>
+                        <p class="text-gray-600">Pencapaian target pengurangan limbah 40% dan integrasi penuh dengan sistem kampus.</p>
+                    </div>
+                </div>
+
+                <!-- 2027 -->
+                <div class="relative">
+                    <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+                            <div class="w-4 h-4 rounded-full bg-white"></div>
+                        </div>
+                    </div>
+                    <div class="mr-[calc(50%+2rem)] pr-8 text-right">
+                        <h3 class="text-xl font-bold text-primary mb-2">2027: Ekspansi Program</h3>
+                        <p class="text-gray-600">Pengembangan fitur berkelanjutan dan program edukasi yang lebih komprehensif.</p>
+                    </div>
+                </div>
+
+                <!-- 2030 -->
+                <div class="relative">
+                    <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+                            <div class="w-4 h-4 rounded-full bg-white"></div>
+                        </div>
+                    </div>
+                    <div class="ml-[calc(50%+2rem)] pl-8">
+                        <h3 class="text-xl font-bold text-primary mb-2">2030: Benchmark Nasional</h3>
+                        <p class="text-gray-600">Menjadi model sistem kantin berkelanjutan untuk institusi pendidikan di Indonesia.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 bg-gradient-to-br from-primary via-primary to-secondary/90 relative overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 bg-grid-slate-100 bg-[size:20px_20px] opacity-10"></div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute inset-0">
+        <div class="absolute top-10 right-10 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+            Bergabung dalam Perubahan
+        </h2>
+        <p class="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
+            Mari bersama mendukung konsumsi dan produksi yang bertanggung jawab untuk kampus yang lebih berkelanjutan.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'merchants:merchant_list' %}" 
+               class="inline-flex items-center justify-center px-8 py-3 bg-white text-primary font-semibold rounded-xl hover:bg-white/90 transition-colors">
+                Mulai Pesan
+                <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+            </a>
+            <a href="https://sdgs.itpln.ac.id" 
+               class="inline-flex items-center justify-center px-8 py-3 border-2 border-white text-white font-semibold rounded-xl hover:bg-white/10 transition-colors">
+                SDGs ITPLN
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
